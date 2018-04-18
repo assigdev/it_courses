@@ -1,0 +1,22 @@
+{% extends 'bases/course_base.html' %}
+
+{% block content %}
+
+
+{% for teacher in teacher_list %}
+     <div class="col-lg-4 col-md-6">
+      <div class="card  has-text-dark bg-light">
+        <a href="{% url 'courses:users:teacher' teacher.user.username %}">
+          <img class="card-img-top" src="{{ teacher.img.thumb.url }}" alt="{{ teacher.user.get_full_name }}">
+        </a>
+        <div class="card-body">
+          <a href="{% url 'courses:users:teacher' teacher.user.username %}">
+            <h5 class="card-title text-center">{{ teacher.user.get_full_name }}</h5>
+          </a>
+        </div>
+      </div>
+    </div>
+{% endfor %}
+
+
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load martortags course_tags %}
+
+{% block content %}
+
+  <div class="row">
+    <h3 class="text-dark mr-auto">{{ course.title }}</h3>
+    {% get_course_detail_button %}
+  </div>
+
+  <div class="row">
+      {% include 'includes/course_state.html' with state=course.state %}
+      <p class="col-md-12 text-dark">
+        Дата проведения: {{ course.start_date }} - {{ course.end_date }}
+      </p>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      {{ course.about|safe_markdown }}
+    </div>
+  </div>
+
+{% endblock %}
+

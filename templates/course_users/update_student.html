@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Изменение профиля студента
+{% endblock %}
+
+
+{% block content %}
+    <h2 class="title">Профиль студента</h2>
+    {% if not user.is_student %}
+        <h4>Профиль студента еще не создан. Пожалуста создайте</h4>
+    {% else %}
+        <form method="post"
+              class="pure-form pure-form-stacked"
+        >
+            {% csrf_token %}
+            {% include 'includes/form_default.html' %}
+            <input type="submit" value="Изменить" class="form-control btn-primary col-3">
+        </form>
+    {% endif %}
+{% endblock %}

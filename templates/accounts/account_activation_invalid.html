@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block title %}Ошибка подтверждения почты{% endblock %}
+
+{% block content %}
+    <h2 class="title">Ошибка подтверждения почты</h2>
+    <a href="{% url 'accounts:send_activation_email' %}">Подтвердить почту еще раз?</a>
+
+{% endblock %}

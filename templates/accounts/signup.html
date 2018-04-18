@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Sign Up
+{% endblock %}
+
+
+{% block content %}
+    <h2 class="title">Регистрация</h2>
+    {% if user.is_authenticated %}
+        <h6>Для того, чтобы создать нового пользователя, необходимо выйти из аккаунта.</h6>
+        <a class="btn btn-primary" href="{% url 'accounts:logout' %}">Выйти</a>
+    {% else %}
+
+        <form action="{% url 'accounts:signup' %}"
+              method="post"
+              enctype="multipart/form-data"
+              class="pure-form pure-form-stacked"
+        >
+            {% csrf_token %}
+            {% include 'includes/form_default.html' %}
+            <input type="submit" value="Создать аккаунт" class="form-control btn-primary col-2">
+        </form>
+    {% endif %}
+
+{% endblock %}

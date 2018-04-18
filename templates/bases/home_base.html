@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block second_header %}
+
+    <div class="row second_header">
+        <h5 class="w-10 second_header_h">Главная</h5>
+        <ul class="nav w-auto">
+
+            {% include 'includes/menu_bottom_url.html' with name='Главная' url_name='main:home' a_class='border-right' %}
+            {% for page in pages %}
+                {% if pages.count == forloop.counter %}
+                    {% include 'includes/menu_bottom_url.html' with name='{{ page_title }}' url_name='main:pages' %}
+                {% else %}
+                    {% include 'includes/menu_bottom_url.html' with name='{{ page_title }}' url_name='main:pages' a_class='border-right' %}
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

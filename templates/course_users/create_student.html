@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Регистрация студента
+{% endblock %}
+
+
+{% block content %}
+    <h2 class="title">Зарегистироваться как студент</h2>
+    {% if user.is_student %}
+        <h4>Вы уже являетесь студентом.</h4>
+    {% else %}
+        <form method="post"
+              class="pure-form pure-form-stacked"
+        >
+            {% csrf_token %}
+            {% include 'includes/form_default.html' %}
+            <input type="submit" value="Зарегистрироваться" class="form-control btn-primary col-3">
+        </form>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,57 @@
+nav {
+
+}
+
+.margin-tb-20{
+  margin-top: 30px;
+  margin-bottom: 20px;
+
+}
+
+.margin-top-30{
+  margin-top: 30px;
+}
+
+.padding-10 {
+  padding: 5px;
+}
+
+.second_header_h{
+  padding: 10px;
+  background-color: #666666;
+  text-align: center;
+}
+
+.w-10 {
+  width: 10% !important;
+}
+
+.second_header a, .link-mod{
+  color: #737373;
+}
+.second_header a:hover, .link-mod:hover{
+  color: #535353;
+}
+.second_header a.active{
+  color: cornflowerblue;
+}
+
+.content {
+  margin-top: 50px;
+}
+
+.bottom-info p{
+  margin-bottom: 0;
+  margin-top: 30px;
+
+}
+
+.course-badge {
+  float: right;
+  margin: 3px;
+  border-radius: 10px;
+}
+
+.link-mod {
+  margin-top: 30px;
+}

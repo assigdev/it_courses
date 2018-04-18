@@ -1,0 +1,7 @@
+{% if state == 'active' %}
+  <p class="badge badge-danger col-md-2">Активный</p>
+{% elif state == 'reg' %}
+  <p class="badge badge-success col-md-2">Открыта регистрация</p>
+{% else %}
+  <p class="badge badge-secondary col-md-2">Курс завершен</p>
+{% endif %}
