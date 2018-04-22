@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "232b52667efb9f84658262788455114baa103ca68f2dfff71223ce7bd5803793"
+            "sha256": "e7db4875b6d065e64f7f0b7bb93cd5e6401399c11638499ce6e81b4fa34cf992"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -35,10 +35,10 @@
         },
         "certifi": {
             "hashes": [
-                "sha256:14131608ad2fd56836d33a71ee60fa1c82bc9d2c8d98b7bdbc631fe1b3cd1296",
-                "sha256:edbc3f203427eef571f79a7692bb160a2b0f7ccaa31953e99bd17e307cf63f7d"
+                "sha256:9fa520c1bacfb634fa7af20a76bcbd3d5fb390481724c597da32c719a7dca4b0",
+                "sha256:13e698f54293db9f89122b0581843a782ad0934a4fe0172d2a980ba77fc61bb7"
             ],
-            "version": "==2018.1.18"
+            "version": "==2018.4.16"
         },
         "chardet": {
             "hashes": [
@@ -53,6 +53,26 @@
                 "sha256:4d398c7b02761e234bbde490aea13ea94cb539ceeb72805b72303f348682f2eb"
             ],
             "version": "==1.11.12"
+        },
+        "django-ckeditor": {
+            "hashes": [
+                "sha256:b49eb630a260eb17dd225ea38b42d58fabc9a8dbbc898224c61f9a570c29e961"
+            ],
+            "version": "==5.4.0"
+        },
+        "django-js-asset": {
+            "hashes": [
+                "sha256:a395d8d19eb201ea8d2bd4f145b38f1717cd74c0f609f040141d8724c5a27f36",
+                "sha256:30149158206f693a5d027fe590096fc84495486bd11cd77d395b4f2ec27fc1d0"
+            ],
+            "version": "==1.1.0"
+        },
+        "django-nested-admin": {
+            "hashes": [
+                "sha256:cbd451560ca95be87eeee3ec04fcbfca95185596620bd9e3cc5d027075efd43c",
+                "sha256:512850d6fc30bdc5c8f35b7faf5f94482fa4f0bda365eb1aaa35c2e52caf1851"
+            ],
+            "version": "==3.0.21"
         },
         "django-stdimage": {
             "hashes": [
@@ -141,6 +161,13 @@
                 "sha256:6d74a176838daa519e0adcbb3a528aaa04205df6b1dc4eeb3ed62fb3073f1431"
             ],
             "version": "==3.37.1"
+        },
+        "python-monkey-business": {
+            "hashes": [
+                "sha256:6d4cf47f011945db838ccf04643acd49b82f7ad6ab7ecba4c8165385687a828a",
+                "sha256:9976522989766f00b2aaa24ec96eacb91a6de7b7001d1452079323b071988e0e"
+            ],
+            "version": "==1.0.0"
         },
         "python-utils": {
             "hashes": [

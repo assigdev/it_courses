@@ -11,7 +11,7 @@ from django.core.exceptions import ObjectDoesNotExist
 class ITUser(AbstractUser):
     phone = models.CharField("Телефонный номер", max_length=20)
     birthday = models.DateField("День рождения")
-    email = models.EmailField("email")
+    email = models.EmailField("email", unique=True)
     email_confirmed = models.BooleanField("Почта подтверждена", default=False)
 
     REQUIRED_FIELDS = ['email', 'phone', 'birthday']
@@ -34,3 +34,18 @@ class ITUser(AbstractUser):
                 return False
         except ObjectDoesNotExist:
             return False
+
+    def is_teacher(self):
+        try:
+            if self.teacher:
+                return True
+            else:
+                return False
+        except ObjectDoesNotExist:
+            return False
+
+    def is_active_student(self):
+        if self.is_student():
+            if self.student.course_set.count() > 0:
+                return True
+        return False

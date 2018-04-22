@@ -61,6 +61,7 @@ class Student(models.Model):
     social_status = models.CharField('Социальный статус', max_length=2, choices=SOCIAL_STATUS)
     school = models.CharField("Место учебы/работы", max_length=100)
     parent_phone = models.CharField("Телефонный номер родителя", max_length=20)
+    score = models.PositiveIntegerField('Количество баллов', default=0)
 
     class Meta:
         verbose_name = "Студент"
@@ -68,3 +69,7 @@ class Student(models.Model):
 
     def __str__(self):
         return self.user.get_full_name()
+
+    def get_open_curses(self):
+        print(self.course_set.exclude(coursestudent__status__in=('fail', 'fail_view')))
+        return self.course_set.exclude(coursestudent__status__in=('fail', 'fail_view'))

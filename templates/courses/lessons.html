@@ -1,0 +1,39 @@
+{% extends 'bases/others_base.html' %}
+
+{% block content %}
+    {% include 'includes/lesson_content.html' with lesson=current_lesson title='Текущее Занятие'  %}
+    <h3 class="text-center">Все занятия:</h3>
+    <div class="accordion" id="accordion">
+        {% for lesson in lesson_list %}
+            <div class="card">
+                <div class="card-header" id="heading{{ forloop.counter }}">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link"
+                                type="button"
+                                data-toggle="collapse"
+                                data-target="#collapse{{ forloop.counter }}"
+                                aria-expanded="true"
+                                aria-controls="collapseOne"
+                        >
+                            {{ lesson.number }} {{ lesson.title }}
+                        </button>
+                    </h5>
+                </div>
+
+                <div id="collapse{{ forloop.counter }}" class="collapse" aria-labelledby="heading{{ forloop.counter }}"
+                     data-parent="#accordion">
+                    <div class="card-body">
+                        <p><strong>Есть тестирование: </strong>{{ lesson.have_quiz_word }}</p>
+                        <p><strong>Есть домашнее задание: </strong>{{ lesson.have_homework_word }}</p>
+                        {{ lesson.content|safe }}
+                        <p><a href="{% url 'courses:lesson' course_slug lesson.slug %}">Перейти к занятию</a></p>
+                    </div>
+                </div>
+            </div>
+
+
+        {% endfor %}
+    </div>
+
+
+{% endblock %}

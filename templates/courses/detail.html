@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load martortags course_tags %}
+{% load course_tags %}
 
 {% block content %}
 
@@ -16,7 +16,7 @@
   </div>
   <div class="row">
     <div class="col-md-12">
-      {{ course.about|safe_markdown }}
+      {{ course.about|safe }}
     </div>
   </div>
 

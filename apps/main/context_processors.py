@@ -1,4 +1,7 @@
+from .models import Page
+
+
 def main_context(request):
     return {
-        'active_url': request.path
+        'pages': Page.objects.exclude(slug='home'),
     }

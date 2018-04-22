@@ -1,5 +1,4 @@
 from django.db import models
-from martor.models import MartorField
 
 
 class Quiz(models.Model):
@@ -29,7 +28,7 @@ QUESTION_TYPE = (
 
 
 class Question(models.Model):
-    content = MartorField('текст вопроса', blank=True)
+    content = models.TextField('текст вопроса')
     quiz = models.ForeignKey(Quiz, verbose_name='Тестирования', on_delete=models.CASCADE, related_name='questions')
     type = models.CharField('Тип вопроса', choices=QUESTION_TYPE, max_length=3, default='var')
     chr_answer = models.CharField('Верный ответ', max_length=100, blank=True)
@@ -45,7 +44,7 @@ class Question(models.Model):
 
 class AnswerVar(models.Model):
     question = models.ForeignKey(Question, verbose_name='Вопрос', on_delete=models.CASCADE)
-    content = MartorField('текст ответа', blank=True)
+    content = models.TextField('текст ответа')
     is_true = models.BooleanField('Верный ответ', default=False)
     position = models.SmallIntegerField('Позиция', default=0)
 
@@ -58,7 +57,6 @@ class AnswerVar(models.Model):
 
 
 class QuizResult(models.Model):
-    # student_in_lesson = models.ForeignKey(StudentInLesson, verbose_name='пользователь', on_delete=models.CASCADE, related_name='answers')
     quiz = models.ForeignKey(Quiz,
                              verbose_name='Тестирование',
                              related_name='users_answers',

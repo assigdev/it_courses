@@ -1,5 +1,9 @@
-{% extends 'base.html' %}
+{% extends 'bases/home_base.html' %}
 
 {% block content %}
+    {{ page.content|safe }}
+
+    <h3 class="text-center">Набор на курсы</h3>
+    {% include 'includes/courses.html' with course_list=active_courses %}
 
 {% endblock %}

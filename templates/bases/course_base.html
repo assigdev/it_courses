@@ -1,14 +1,16 @@
 {% extends 'base.html' %}
 
 {% block second_header %}
-
     <div class="row second_header">
         <h5 class="w-10 second_header_h">Курсы</h5>
         <ul class="nav w-auto">
 
             {% include 'includes/menu_bottom_url.html' with name='Курсы' url_name='courses:list' a_class='border-right' %}
-            {% include 'includes/menu_bottom_url.html' with name='Мои курсы' url_name='courses:my_courses' a_class='border-right' %}
-            {% include 'includes/menu_bottom_url.html' with name='Преподаватели' url_name='courses:users:teachers' %}
+            {% if user.is_active_student %}
+                {% include 'includes/menu_bottom_url.html' with name='Мои курсы' url_name='courses:my_courses' a_class='border-right' %}
+            {% endif %}
+            {% include 'includes/menu_bottom_url.html' with name='Преподаватели' url_name='courses:users:teachers' a_class='border-right' %}
+            {% include 'includes/menu_bottom_url.html' with name='Студенты' url_name='courses:users:students'  %}
         </ul>
     </div>
 {% endblock %}

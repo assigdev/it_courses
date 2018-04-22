@@ -1,6 +1,6 @@
 BADGE = '<span class="badge course-badge %s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>'
 
-COURSE_DETAIL = '<a class="btn btn-outline-success col-md-6 offset-md-3" href="%s">'
+COURSE_DETAIL = '<a class="btn btn-outline-success col-md-6 offset-md-3" href="%s">Записаться<a>'
 
 USER_NOT_AUTH = '<p>Чтобы записаться на курс, пожалуйста <a href="%s">войдите</a></p>'
 USER_NOT_STUD = '<a class="btn btn-outline-success" href="%s?course_id=%s">Зарегистрироваться</a>'

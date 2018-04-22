@@ -1,6 +1,6 @@
 from .base import *
 from ._installed_apps import *
-
+from .ckeditor import *
 IS_PRODUCTION = os.environ.get('IS_PRODUCTION', False)
 
 if IS_PRODUCTION:

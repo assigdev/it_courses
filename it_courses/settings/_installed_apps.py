@@ -14,6 +14,7 @@ MY_APPS = [
     'apps.main',
     'apps.course_users',
     'apps.courses',
+    'apps.control_panel',
     'apps.quizzes',
     'apps.accounts',
 ]
@@ -22,7 +23,9 @@ MY_APPS = [
 INSTALLED_APPS = [
     # 'raven.contrib.django.raven_compat',
     'martor',
-
+    'ckeditor',
+    'ckeditor_uploader',
+    'nested_admin',
 ]
 
 DEV_APS = [

@@ -9,4 +9,4 @@ class CourseAdmin(admin.ModelAdmin):
 
 @admin.register(Lesson)
 class CourseAdmin(admin.ModelAdmin):
-    list_display = ('title', 'course', 'number', 'date', 'home_work_deadline', 'quiz_deadline')
+    list_display = ('title', 'course', 'number', 'date', 'homework_deadline', 'quiz_deadline')

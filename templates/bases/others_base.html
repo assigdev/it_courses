@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block second_header %}
+    <div class="row second_header">
+        <h5 class="w-10 second_header_h">{{ menu_title }}</h5>
+        <ul class="nav ">
+
+            {% with menu_courses.count as courses_count %}
+                {% for course in menu_courses %}
+                    {% if courses_count == forloop.counter %}
+                        {% include 'includes/menu_bottom_url_with_attr.html' with name=course.title url_name=url_name url_attr=course.slug %}
+                    {% else %}
+                        {% include 'includes/menu_bottom_url_with_attr.html' with name=course.title url_name=url_name url_attr=course.slug a_class='border-right' %}
+                    {% endif %}
+                {% endfor %}
+            {% endwith %}
+        </ul>
+    </div>
+{% endblock %}

@@ -9,6 +9,26 @@
         <ul class="navbar-nav mr-auto">
             {% include 'includes/menu_url_static.html' with name='Главная' url_name='/' %}
             {% include 'includes/menu_url_dynamic.html' with name='Курсы' url_name='courses:list' %}
+            {% if user.is_active_student %}
+                {% url 'courses:lessons' user.student.get_open_curses.first.slug as url_name %}
+                {% include 'includes/menu_url_static.html' with name='Занятия' url_name=url_name %}
+            {% endif %}
+            {% if user.is_teacher %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        Панель управления
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+
+                        <a class="dropdown-item" href="{% url 'control:selection' user.teacher.course_set.first.slug %}">
+                            Статусы студентов
+                        </a>
+                        <a class="dropdown-item" href="{% url 'accounts:logout' %}">Посещения</a>
+                        <a class="dropdown-item" href="{% url 'accounts:logout' %}">Домашние задания</a>
+                    </div>
+                </li>
+            {% endif %}
         </ul>
 
         <ul class="navbar-nav">

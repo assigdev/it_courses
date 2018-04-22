@@ -1,0 +1,30 @@
+{% extends 'bases/course_base.html' %}
+
+{% block content %}
+     <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Студент</th>
+            <th scope="col">Пройденных тестов</th>
+            <th scope="col">Сданных ДЗ</th>
+            <th scope="col">Занятий</th>
+            <th scope="col">Завершенных курсов</th>
+            <th scope="col">Баллов</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for student in student_list %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ student.user.get_full_name }}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>{{ student.score }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    {% include 'includes/pagination.html' %}
+{% endblock %}

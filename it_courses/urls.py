@@ -20,10 +20,16 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
+    path('accounts/', include('apps.accounts.urls', namespace="accounts")),
+    path('education/', include('apps.courses.urls', namespace="courses")),
+    path('control_panel/', include('apps.control_panel.urls', namespace='control')),
+    path('quiz/', include('apps.quizzes.urls', namespace='quiz')),
+
     path('admin/', admin.site.urls),
     path('verified-email-field/', include('verified_email_field.urls')),
-    path('accounts/', include('apps.accounts.urls', namespace="accounts")),
-    path('courses/', include('apps.courses.urls', namespace="courses")),
+    path('ckeditor/', include('ckeditor_uploader.urls')),
+    path('_nested_admin/', include('nested_admin.urls')),
+
     path('', include('apps.main.urls', namespace="main")),
 
 ]

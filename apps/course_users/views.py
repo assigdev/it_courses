@@ -4,6 +4,7 @@ from .models import Teacher, Student
 from apps.courses.models import Course
 from .forms import StudentForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from .mixins import StudentRequiredMixin
 from django.contrib import messages
 
 
@@ -24,7 +25,7 @@ class TeacherDetailView(DetailView):
         return super().get_queryset().get(user__username=self.kwargs['username'])
 
 
-class StudentCreateView(LoginRequiredMixin, CreateView):
+class StudentCreateView(StudentRequiredMixin, CreateView):
     form_class = StudentForm
     template_name = 'course_users/create_student.html'
 
@@ -50,7 +51,7 @@ class StudentCreateView(LoginRequiredMixin, CreateView):
 
 class StudentUpdateView(LoginRequiredMixin, UpdateView):
     form_class = StudentForm
-    template_name = 'course_users/create_student.html'
+    template_name = 'course_users/update_student.html'
 
     def get_object(self, queryset=None):
         return self.request.user.student
@@ -58,3 +59,9 @@ class StudentUpdateView(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         messages.success(self.request, 'Профиль студента успешно изменен')
         return reverse('accounts:settings')
+
+
+class StudentListView(ListView):
+    template_name = 'course_users/student_list.html'
+    model = Student
+    paginate_by = 30

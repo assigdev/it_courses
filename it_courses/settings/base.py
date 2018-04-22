@@ -53,6 +53,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'apps.main.context_processors.main_context'
             ],
         },
     },
@@ -127,7 +128,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 ADMIN_MEDIA_PREFIX = '/static/admin/'
 
 AUTH_USER_MODEL = 'accounts.ITUser'
-LOGIN_URL = '/user/login'
+LOGIN_URL = '/accounts/login'
 LOGIN_REDIRECT_URL = '/'
 
 EMAIL_USE_SSL = True

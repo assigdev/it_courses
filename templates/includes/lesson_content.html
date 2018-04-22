@@ -1,0 +1,32 @@
+{% load lesson_tags %}
+{% get_student_in_lesson lesson as student_in_lesson %}
+
+    {% for lesson in lesson_list %}
+        <a href="{% url 'courses:lesson' course_slug lesson.slug %}">{{ lesson.number }}</a>
+    {% endfor %}
+
+
+    <h3 class="text-center">{{ title }} {{ lesson.number }} - {{ lesson.title }}</h3>
+    <p><strong>Дата проведения:</strong> {{ lesson.date }}</p>
+    <p><strong>Посещение:</strong> {{ student_in_lesson.get_attendance }}</p>
+
+    {% if lesson.have_quiz %}
+        <h4>Тестирование</h4>
+        <p><strong>Статус: </strong>{{ student_in_lesson.get_homework_final }}</p>
+        <p><strong>Дедлайн: </strong>{{ lesson.quiz_deadline }} </p>
+        <p><strong>В срок: </strong>{{ student_in_lesson.get_quiz_in_deadline }}</p>
+        <p><strong>Балов набрано: </strong>{{ student_in_lesson.quiz_score }}</p>
+        <p><a class="btn btn-outline-success" href="{% url 'quiz:detail' lesson.quiz.slug %}">Пройти тест</a></p>
+    {% endif %}
+
+    {% if lesson.have_homework %}
+        <h4>Домашнее задание</h4>
+        <p><strong>Статус: </strong>{{ student_in_lesson.get_homework_final }}</p>
+        <p><strong>Дедлайн: </strong>{{ lesson.homework_deadline }} </p>
+        <p><strong>В срок: </strong>{{ student_in_lesson.get_homework_in_deadline }}</p>
+        <p><strong>Балов набрано: </strong>{{ student_in_lesson.homework_score }}</p>
+        <p>{{ lesson.homework|safe }}</p>
+    {% endif %}
+
+    <h4>Учебный материал</h4>
+    {{ lesson.content|safe }}

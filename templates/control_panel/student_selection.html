@@ -1,0 +1,37 @@
+{% extends 'bases/others_base.html' %}
+{% load staticfiles course_tags %}
+
+{% block content %}
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Студент</th>
+            <th scope="col">Статус</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for student in course.students.all %}
+            <tr>
+                <th scope="row">{{ forloop.id }}</th>
+                <td>{{ student.user.get_full_name }}</td>
+                <td>
+                    <select class="form-control js-state"
+                        name="status"
+                        data-url="{% url 'control:selection' course.slug %}"
+                        data-course_id="{{ course.id }}"
+                        data-student_id="{{ student.id }}"
+                    >
+                        {% get_status_options %}
+                    </select>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/control_center.js' %}"></script>
+{% endblock %}
