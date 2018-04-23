@@ -1,14 +1,15 @@
-from django.shortcuts import render
 from django.views.generic import DetailView
-from apps.course_users.models import Teacher
 from apps.course_users.mixins import TeacherRequiredMixin
-from .mixins import SecondHeaderMixin
+from apps.main.mixins import SecondHeaderMixin
 from apps.courses.models import Course
 from django.http import JsonResponse
-from .forms import SelectionForm
+from .forms import SelectionForm, VisitForm, HomeworkForm
 
 
-class AjaxDetailView(DetailView):
+class BaseCPDetailView(SecondHeaderMixin, DetailView):
+    success_message = ''
+    form = None
+    header_path = 'control'
 
     def get(self, request, *args, **kwargs):
         if request.is_ajax():
@@ -20,57 +21,52 @@ class AjaxDetailView(DetailView):
         return JsonResponse(ajax_context)
 
     def get_ajax_context_data(self):
-        return {'error': None}
+        context = {'is_error': False}
+        form = self.form(self.request.GET)
+        if form.is_valid():
+            form.save()
+            context['message'] = self.success_message
+        else:
+            context['message'] = 'Отправленны не валидные данные'
+            context['is_error'] = True
+        return context
+
+    def get_object(self, queryset=None):
+        if self.kwargs['slug'] == 'base':
+            return self.get_queryset().first()
+        return super().get_object(queryset=queryset)
 
 
-# CP is Control Panel
-class StudentSelectionCPView(SecondHeaderMixin, TeacherRequiredMixin, AjaxDetailView):
+class StudentSelectionCPView(TeacherRequiredMixin, BaseCPDetailView):
     model = Course
     template_name = 'control_panel/student_selection.html'
-    url_name = ''
+    url_name = 'control:selection'
     menu_title = 'Статус'
+    success_message = 'Статус успешно сохранен'
+    form = SelectionForm
 
     def get_queryset(self):
         return super().get_queryset().filter(teachers=self.request.user.teacher).prefetch_related('students')
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data()
-        context['menu_courses'] = self.get_queryset()
-        return context
 
-    def get_ajax_context_data(self):
-        context = super().get_ajax_context_data()
-        form = SelectionForm(self.request.GET)
-        if form.is_valid():
-            form.save()
-            context['message'] = 'Статус успешно изменен'
-        else:
-            print(form)
-            context['error'] = 'Отправленны не валидные данные'
-        return context
-
-
-# CP is Control Panel
-class StudentVisitCPView(SecondHeaderMixin, TeacherRequiredMixin, AjaxDetailView):
-    model = Course
+class StudentVisitCPView(StudentSelectionCPView):
     template_name = 'control_panel/student_visit.html'
-    url_name = ''
+    url_name = 'control:visit'
     menu_title = 'Посещения'
+    success_message = 'Изменения приняты'
+    form = VisitForm
 
     def get_queryset(self):
         return super().get_queryset().filter(teachers=self.request.user.teacher).prefetch_related('students')
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data()
-        return context
 
-    def get_ajax_context_data(self):
-        context = super().get_ajax_context_data()
-        form = SelectionForm(self.request.GET)
-        if form.is_valid():
-            form.save()
-            context['message'] = 'Статус успешно изменен'
-        else:
-            print(form)
-            context['error'] = 'Отправленны не валидные данные'
-        return context
+class StudentHomeworkCPView(StudentSelectionCPView):
+    template_name = 'control_panel/student_visit.html'
+    url_name = 'control_panel:homework'
+    menu_title = 'Домашние задания'
+    success_message = 'Изменения приняты'
+    form = HomeworkForm
+
+    def get_queryset(self):
+        return super().get_queryset().filter(teachers=self.request.user.teacher).prefetch_related('students')
+

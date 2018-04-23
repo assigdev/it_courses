@@ -6,20 +6,23 @@ from .forms import StudentForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .mixins import StudentRequiredMixin
 from django.contrib import messages
+from apps.main.mixins import HeaderMixin
 
 
-class TeacherListView(ListView):
+class TeacherListView(HeaderMixin, ListView):
     template_name = 'course_users/teachers.html'
     paginate_by = 12
     model = Teacher
+    header_path = 'course'
 
     def get_queryset(self):
         return super().get_queryset().select_related('user')
 
 
-class TeacherDetailView(DetailView):
+class TeacherDetailView(HeaderMixin, DetailView):
     model = Teacher
     template_name = 'course_users/teacher.html'
+    header_path = 'course'
 
     def get_object(self, queryset=None):
         return super().get_queryset().get(user__username=self.kwargs['username'])
@@ -61,7 +64,9 @@ class StudentUpdateView(LoginRequiredMixin, UpdateView):
         return reverse('accounts:settings')
 
 
-class StudentListView(ListView):
+class StudentListView(HeaderMixin, ListView):
     template_name = 'course_users/student_list.html'
     model = Student
     paginate_by = 30
+    header_path = 'course'
+

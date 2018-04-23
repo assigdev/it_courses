@@ -34,7 +34,10 @@ def get_course_button(context, course):
     user = context['request'].user
     try:
         obj = CourseStudent.objects.get(course=course, student=user.student)
-        return safe('<p class="text-center">%s</p>' % obj.get_status_display())
+        if obj.status in ('active', 'finish'):
+            return safe(tags_data.USER_ACTIVE_BUTTON % reverse('courses:lessons', kwargs={'slug': course.slug}))
+        p_class = 'text-success' if obj.status == 'in_view' else 'text-danger'
+        return safe('<p class="text-center %s">%s</p>' % (p_class, obj.get_status_display()))
     except (CourseStudent.DoesNotExist, AttributeError):
         return safe(tags_data.COURSE_DETAIL % reverse('courses:detail', kwargs={'slug': course.slug}))
 
@@ -46,15 +49,16 @@ def get_course_detail_button(context):
     if not user.is_authenticated:
         return safe(tags_data.USER_NOT_AUTH % reverse('accounts:login'))
     if not user.email_confirmed:
-        return safe('<p>Подтвердите почту для доступа к курсу.</p>')
+        return safe('<h5 class="text-info">Подтвердите почту для доступа к курсу.</p>')
     if not user.is_student:
         return safe(tags_data.USER_NOT_STUD % (reverse('courses:users:create_student'), course.id))
     try:
         obj = CourseStudent.objects.get(course=course, student=user.student)
         if obj.status == 'in_view':
             return safe(tags_data.USER_ENROLL)
-        # if obj.status in ['active', 'fail', 'fail_test', 'fail_view', 'finish']:
-        return safe('<p>%s</p>' % obj.status)
+        if obj.status in ('active', 'finish'):
+            return safe(tags_data.USER_ACTIVE % reverse('courses:lessons', kwargs={'slug': course.slug}))
+        return safe('<h5 class="text-danger">%s</p>' % obj.get_status_display())
     except CourseStudent.DoesNotExist:
         return safe(tags_data.USER_NOT_ENROLL % reverse('courses:enroll', kwargs={'slug': course.slug}))
 

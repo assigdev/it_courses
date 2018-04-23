@@ -2,7 +2,10 @@
 
 {% block content %}
     {% include 'includes/lesson_content.html' with lesson=current_lesson title='Текущее Занятие'  %}
+
+
     <h3 class="text-center">Все занятия:</h3>
+
     <div class="accordion" id="accordion">
         {% for lesson in lesson_list %}
             <div class="card">
@@ -30,8 +33,8 @@
                     </div>
                 </div>
             </div>
-
-
+        {% empty %}
+            <h5 class="text-center">Занятий пока еще нет.</h5>
         {% endfor %}
     </div>
 

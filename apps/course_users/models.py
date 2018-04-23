@@ -61,6 +61,8 @@ class Student(models.Model):
     social_status = models.CharField('Социальный статус', max_length=2, choices=SOCIAL_STATUS)
     school = models.CharField("Место учебы/работы", max_length=100)
     parent_phone = models.CharField("Телефонный номер родителя", max_length=20)
+    homework_count = models.PositiveSmallIntegerField('Количество сданных ДЗ', default=0)
+    quiz_count = models.PositiveSmallIntegerField('Количество сданных тестов', default=0)
     score = models.PositiveIntegerField('Количество баллов', default=0)
 
     class Meta:
@@ -71,5 +73,4 @@ class Student(models.Model):
         return self.user.get_full_name()
 
     def get_open_curses(self):
-        print(self.course_set.exclude(coursestudent__status__in=('fail', 'fail_view')))
-        return self.course_set.exclude(coursestudent__status__in=('fail', 'fail_view'))
+        return self.course_set.filter(coursestudent__status__in=('active', 'finish'))

@@ -1,14 +1,15 @@
 from django.db import models
 from apps.course_users.models import Teacher, Student
 from apps.quizzes.models import Quiz
-from martor.models import MartorField
 from django.utils import timezone
-from utils.mixins.models import ModelAutoSlugMixin
 from apps.quizzes.models import QuizResult
 from utils.shortcuts.for_stdimage import img_files_del
 from stdimage import StdImageField
 from utils.img_paths import HASH_CHUNK_SIZE
 from ckeditor_uploader.fields import RichTextUploadingField
+from it_courses.settings import LEVEL, HOMEWORK_SCORE, TEST_SCORE, ATTENDANCE_SCORE
+from django.db import transaction
+
 
 STATES = (
     ('active', 'Курс уже идет'),
@@ -112,8 +113,9 @@ class Lesson(models.Model):
     date = models.DateField('Дата занятия', default=timezone.now)
     content = RichTextUploadingField('Материал занятия', blank=True)
     homework = RichTextUploadingField('Домашнее задание', blank=True)
+    homework_level = models.PositiveSmallIntegerField('Уровень сложности', choices=LEVEL, default=3)
     homework_deadline = models.DateField('Дедлайн для домашней работы', blank=True, null=True)
-    quiz = models.ForeignKey(Quiz, verbose_name='Тестирование', default=None,  blank=True, null=True, on_delete=models.SET_NULL)
+    quiz = models.OneToOneField(Quiz, verbose_name='Тестирование', default=None,  blank=True, null=True, on_delete=models.SET_NULL)
     quiz_deadline = models.DateField('Дедлайн для тестирования', blank=True, null=True)
 
     objects = LessonQuerySet.as_manager()
@@ -144,12 +146,8 @@ class Lesson(models.Model):
 
 
 QUIZ_STATUS = (
-    ('on_first', 'Пройден с первого раза'),
-    ('on_second', 'Пройден со второго раза'),
-    ('on_third', 'Пройден со третьего раза'),
-    ('off_first', 'Не пройден с первого раза'),
-    ('off_second', 'Не пройден со второго раза'),
-    ('off', 'Провален'),
+    ('on', 'Пройден'),
+    ('off', 'Не пройден'),
     ('not_start', 'Не начат'),
 )
 
@@ -157,12 +155,12 @@ QUIZ_STATUS = (
 class StudentInLesson(models.Model):
     student = models.ForeignKey(Student, verbose_name='ученик', on_delete=models.CASCADE)
     lesson = models.ForeignKey(Lesson, verbose_name='Занятие', on_delete=models.CASCADE)
-    attendance = models.NullBooleanField('Был на занятии', default=False)
+    attendance = models.BooleanField('Был на занятии', default=False)
     is_homework_final = models.BooleanField('Сдана', default=False)
     is_homework_in_deadline = models.NullBooleanField('В срок', default=None)
     quiz_status = models.CharField('Статус тестирования', max_length=9, default='not_start', choices=QUIZ_STATUS)
     is_quiz_in_deadline = models.NullBooleanField('В срок', default=None)
-    quiz_result = models.ForeignKey(QuizResult, 'Результат тестирования', blank=True, null=True)
+    quiz_result = models.OneToOneField(QuizResult, 'Результат тестирования', default=None, blank=True, null=True)
     homework_score = models.PositiveSmallIntegerField('Очки за домашнее задание', default=0)
     quiz_score = models.PositiveSmallIntegerField('Очки за тестирование', default=0)
 
@@ -170,14 +168,47 @@ class StudentInLesson(models.Model):
         verbose_name = 'Студент на занятии'
         verbose_name_plural = 'Студенты на занятиях'
 
-    def __str__(self):
-        return ''
+    @transaction.atomic
+    def set_quiz_result(self, quiz_result):
+        quiz = quiz_result.quiz
+        result_percent = quiz_result.get_result_percent()
+        if quiz.result > result_percent:
+            self.quiz_status = 'off'
+            coefficient = 0.5
+        else:
+            self.quiz_status = 'on'
+            coefficient = 1
+        self.quiz_score = int(TEST_SCORE * quiz.level * coefficient * result_percent / 100)
+        self.is_quiz_in_deadline = False if self.lesson.quiz_deadline > timezone.now().date() else True
+        self.quiz_result = quiz_result
+        self.save()
+        self.student.score += self.quiz_score
+        self.student.save()
+
+    @transaction.atomic
+    def set_homework_result(self, is_final):
+        self.is_homework_in_deadline = False if self.lesson.homework_deadline > timezone.now().date() else True
+        self.is_homework_final = is_final
+        if is_final:
+            self.homework_score = HOMEWORK_SCORE * self.lesson.homework_level
+            self.student.score += self.homework_score
+            self.student.homework_count += 1
+            self.student.save()
+        else:
+            self.homework_score = 0
+            self.student.score -= HOMEWORK_SCORE * self.lesson.homework_level
+            self.student.homework_count -= 1
+            self.student.save()
+        self.save()
+
+    @transaction.atomic
+    def set_attendance(self, is_attendance):
+        self.attendance = is_attendance
 
     def get_attendance(self):
         return {
                 False: 'Не был',
                 True: 'Был на занятии',
-                None: 'Не отмечено',
             }[self.attendance]
 
     def get_homework_final(self):

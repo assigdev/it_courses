@@ -1,18 +1,20 @@
 {% extends 'base.html' %}
+{% load menu_tags %}
 
 {% block second_header %}
 
     <div class="row second_header">
         <h5 class="w-10 second_header_h">Главная</h5>
         <ul class="nav w-auto">
-
-            {% include 'includes/menu_bottom_url.html' with name='Общая информация' url_name='main:home' a_class='border-right' %}
+            <li class="nav-item">
+                {% url 'main:home' as url %}
+                <a class="nav-link {% is_url_active url %}" href="{{ url }}">Общая информация</a>
+            </li>
             {% for page in pages %}
-                {% if pages.count == forloop.counter %}
-                    {% include 'includes/menu_bottom_url_with_attr.html' with name=page.title url_name='main:page' url_attr=page.slug %}
-                {% else %}
-                    {% include 'includes/menu_bottom_url_with_attr.html' with name=page.title url_name='main:page' url_attr=page.slug a_class='border-right' %}
-                {% endif %}
+                <li class="nav-item">
+                    {% url 'main:page' page.slug as url %}
+                    <a class="nav-link {% is_url_active url %}" href="{{ url }}">{{ page.title }}</a>
+                </li>
             {% endfor %}
         </ul>
     </div>

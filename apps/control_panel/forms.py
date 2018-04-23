@@ -38,18 +38,19 @@ class VisitForm(forms.Form):
         return obj
 
 
-class HomeWorkForm(forms.Form):
+class HomeworkForm(forms.Form):
     lesson_id = forms.IntegerField(required=True)
     student_id = forms.IntegerField(required=True)
-    attendance = forms.BooleanField(required=True)
+    is_homework_final = forms.NullBooleanField(required=True)
 
     def save(self):
         lesson_id = self.cleaned_data['lesson_id']
         student_id = self.cleaned_data['student_id']
-        attendance = self.cleaned_data['attendance']
+        is_homework_final = self.cleaned_data['is_homework_final']
         # lesson = get_object_or_404(Course, id=lesson_id)
         # student = get_object_or_404(Student, id=student_id)
         obj = StudentInLesson.objects.get(lesson__id=lesson_id, student__id=student_id)
-        obj.attendance = attendance
+        obj.is_homework_final = is_homework_final
+        obj.is_homework_in_deadline = True
         obj.save()
         return obj

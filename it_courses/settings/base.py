@@ -141,3 +141,12 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 
 DEFAULT_TO_EMAIL = 'asipipi@gmail.com'
+
+LEVEL = (
+    (2, 'простой'),
+    (3, 'нормальный'),
+    (4, 'сложный'),
+)
+TEST_SCORE = 10
+HOMEWORK_SCORE = 30
+ATTENDANCE_SCORE = 10

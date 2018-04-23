@@ -1,4 +1,6 @@
 from django.db import models
+from it_courses.settings import LEVEL
+from django.db import transaction
 
 
 class Quiz(models.Model):
@@ -12,6 +14,7 @@ class Quiz(models.Model):
         default=False,
         help_text="Если включить, то после прохождения теста, пользователь увидит, где и как он ошибся"
     )
+    level = models.PositiveSmallIntegerField('Уровень сложности', choices=LEVEL, default=3)
 
     class Meta:
         verbose_name = 'Тестирование'
@@ -41,6 +44,11 @@ class Question(models.Model):
     def __str__(self):
         return self.content
 
+    def get_success_answer(self):
+        if self.type == 'chr':
+            return self.chr_answer
+        return self.answervar_set.get(is_true=True)
+
 
 class AnswerVar(models.Model):
     question = models.ForeignKey(Question, verbose_name='Вопрос', on_delete=models.CASCADE)
@@ -61,17 +69,42 @@ class QuizResult(models.Model):
                              verbose_name='Тестирование',
                              related_name='users_answers',
                              on_delete=models.CASCADE)
-    result = models.PositiveSmallIntegerField('Процент правильных ответов', default=0)
+    result = models.PositiveSmallIntegerField('Правильных ответов', default=0)
+
+    def __str__(self):
+        return "Результаты тестирования: %s - %i" % (self.quiz.title, self.id)
 
     class Meta:
         verbose_name = 'Результат тестирования'
         verbose_name_plural = 'Результаты тестирования'
 
+    @transaction.atomic
+    def save_result(self, post_data):
+        success_number = 0
+        for question in self.quiz.questions.all():
+            answer = post_data['answer_%s' % question.position]
+            if question.type == 'chr':
+                if answer == question.chr_answer:
+                    StudentAnswer.objects.create(user_answer=self, question=question, answer_chr=question.chr_answer)
+                    success_number += 1
+            else:
+                answer_obj = AnswerVar.objects.get(id=answer)
+                StudentAnswer.objects.create(user_answer=self, question=question, answer_var=answer_obj)
+                if answer_obj.is_true:
+                    success_number += 1
+        self.result = success_number
+        self.save()
+        return self
+
+    def get_result_percent(self):
+        return self.result * 100 / self.quiz.questions.count()
+
 
 class StudentAnswer(models.Model):
     user_answer = models.ForeignKey(QuizResult, verbose_name='Тест с ответами пользователя',  on_delete=models.CASCADE)
     question = models.ForeignKey(Question, verbose_name='Вопрос', on_delete=models.CASCADE)
-    answer_var = models.ForeignKey(AnswerVar, verbose_name='Ответ: один верный', on_delete=models.CASCADE)
+    answer_var = models.ForeignKey(AnswerVar, verbose_name='Ответ: один верный',
+                                   blank=True, null=True, on_delete=models.SET_NULL)
     answer_chr = models.CharField('Текстовый ответ', max_length=100, blank=True)
 
     class Meta:

@@ -5,7 +5,7 @@
 {% block content %}
     <h2 class="title text-center">{{ quiz.title }}</h2>
 
-    <form method="post" action="{% url 'quiz:detail' quiz.slug %}">
+    <form method="post">
         {% csrf_token %}
         {% for question in quiz.questions.all %}
             <p>{{ forloop.counter }}) {{ question.content }}</p>
@@ -18,7 +18,7 @@
                 {% for answer in question.answervar_set.all %}
                     <p>
                         <label>
-                            <input name="answer_{{ question.position }}" type="radio">
+                            <input name="answer_{{ question.position }}" value={{ answer.id }} type="radio">
                             {{ answer.content }}
                         </label>
                     </p>
@@ -30,6 +30,5 @@
         <input type="submit" class=" btn btn-outline-success" value="Отправить">
     </form>
     <br>
-
 
 {% endblock %}

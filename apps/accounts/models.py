@@ -46,6 +46,6 @@ class ITUser(AbstractUser):
 
     def is_active_student(self):
         if self.is_student():
-            if self.student.course_set.count() > 0:
+            if self.student.get_open_curses().count() > 0:
                 return True
         return False

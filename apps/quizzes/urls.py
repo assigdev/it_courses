@@ -4,5 +4,5 @@ from .views import QuizDetailView
 
 app_name = 'quizzes'
 urlpatterns = [
-    path('<slug:slug>', QuizDetailView.as_view(), name='detail'),
+    path('quiz/<slug:slug>', QuizDetailView.as_view(), name='detail'),
 ]

@@ -19,8 +19,14 @@ $(function () {
       async: true,
       success: function (data) {
         var ajax_alert = $('.ajax-alert');
+        if (data.is_error){
+          ajax_alert.addClass('alert-danger');
+        }
+        else{
+          ajax_alert.addClass('alert-success');
+        }
         ajax_alert.find('strong').text(data.message);
-        ajax_alert.addClass('alert-success').show(200).delay(2000).hide(200);
+        ajax_alert.show(200).delay(2000).hide(200);
         console.log(data);
       },
       error: function () {

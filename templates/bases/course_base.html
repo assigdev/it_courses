@@ -1,16 +1,28 @@
 {% extends 'base.html' %}
+{% load menu_tags %}
 
 {% block second_header %}
     <div class="row second_header">
         <h5 class="w-10 second_header_h">Курсы</h5>
         <ul class="nav w-auto">
-
-            {% include 'includes/menu_bottom_url.html' with name='Курсы' url_name='courses:list' a_class='border-right' %}
+            <li class="nav-item">
+                {% url 'courses:list' as url %}
+                <a class="nav-link {% is_url_active url %}" href="{{ url }}">Курсы</a>
+            </li>
             {% if user.is_active_student %}
-                {% include 'includes/menu_bottom_url.html' with name='Мои курсы' url_name='courses:my_courses' a_class='border-right' %}
+                <li class="nav-item">
+                    {% url 'courses:my_courses' as url %}
+                    <a class="nav-link {% is_url_active url %}" href="{{ url }}">Мои курсы</a>
+                </li>
             {% endif %}
-            {% include 'includes/menu_bottom_url.html' with name='Преподаватели' url_name='courses:users:teachers' a_class='border-right' %}
-            {% include 'includes/menu_bottom_url.html' with name='Студенты' url_name='courses:users:students'  %}
+            <li class="nav-item">
+                {% url 'courses:users:teachers' as url %}
+                <a class="nav-link {% is_url_active url %}" href="{{ url }}">Преподаватели</a>
+            </li>
+            <li class="nav-item">
+                {% url 'courses:users:students' as url %}
+                <a class="nav-link {% is_url_active url %}" href="{{ url }}">Студенты</a>
+            </li>
         </ul>
     </div>
 {% endblock %}
