@@ -7,7 +7,7 @@ from utils.shortcuts.for_stdimage import img_files_del
 from stdimage import StdImageField
 from utils.img_paths import HASH_CHUNK_SIZE
 from ckeditor_uploader.fields import RichTextUploadingField
-from it_courses.settings import LEVEL, HOMEWORK_SCORE, TEST_SCORE, ATTENDANCE_SCORE
+from it_courses.settings import LEVEL, HOMEWORK_SCORE, TEST_SCORE, ATTENDANCE_SCORE, DEADLINE_COEFFICIENT
 from django.db import transaction
 
 
@@ -158,6 +158,7 @@ class StudentInLesson(models.Model):
     attendance = models.BooleanField('Был на занятии', default=False)
     is_homework_final = models.BooleanField('Сдана', default=False)
     is_homework_in_deadline = models.NullBooleanField('В срок', default=None)
+    homework_link = models.URLField('Ссылка на ДЗ', blank=True)
     quiz_status = models.CharField('Статус тестирования', max_length=9, default='not_start', choices=QUIZ_STATUS)
     is_quiz_in_deadline = models.NullBooleanField('В срок', default=None)
     quiz_result = models.OneToOneField(QuizResult, 'Результат тестирования', default=None, blank=True, null=True)
@@ -172,38 +173,57 @@ class StudentInLesson(models.Model):
     def set_quiz_result(self, quiz_result):
         quiz = quiz_result.quiz
         result_percent = quiz_result.get_result_percent()
+        student = self.student
+
+        if self.lesson.quiz_deadline > timezone.now().date():
+            self.is_quiz_in_deadline = True
+            deadline_coefficient = DEADLINE_COEFFICIENT
+        else:
+            self.is_quiz_in_deadline = False
+            deadline_coefficient = 1
         if quiz.result > result_percent:
             self.quiz_status = 'off'
             coefficient = 0.5
         else:
             self.quiz_status = 'on'
             coefficient = 1
-        self.quiz_score = int(TEST_SCORE * quiz.level * coefficient * result_percent / 100)
-        self.is_quiz_in_deadline = False if self.lesson.quiz_deadline > timezone.now().date() else True
+        self.quiz_score = int(TEST_SCORE * quiz.level * deadline_coefficient * coefficient * result_percent / 100)
         self.quiz_result = quiz_result
         self.save()
-        self.student.score += self.quiz_score
-        self.student.save()
+        student.score += self.quiz_score
+        student.save()
 
     @transaction.atomic
     def set_homework_result(self, is_final):
-        self.is_homework_in_deadline = False if self.lesson.homework_deadline > timezone.now().date() else True
+        if self.lesson.homework_deadline > timezone.now().date():
+            self.is_homework_in_deadline = True
+            deadline_coefficient = DEADLINE_COEFFICIENT
+        else:
+            self.is_homework_in_deadline = False
+            deadline_coefficient = 1
         self.is_homework_final = is_final
+        student = self.student
         if is_final:
-            self.homework_score = HOMEWORK_SCORE * self.lesson.homework_level
-            self.student.score += self.homework_score
-            self.student.homework_count += 1
-            self.student.save()
+            self.homework_score = HOMEWORK_SCORE * self.lesson.homework_level * deadline_coefficient
+            student.score += self.homework_score
+            student.homework_count += 1
         else:
             self.homework_score = 0
-            self.student.score -= HOMEWORK_SCORE * self.lesson.homework_level
-            self.student.homework_count -= 1
-            self.student.save()
+            student.score -= HOMEWORK_SCORE * self.lesson.homework_level * deadline_coefficient
+            student.homework_count -= 1
+        student.save()
         self.save()
 
     @transaction.atomic
     def set_attendance(self, is_attendance):
         self.attendance = is_attendance
+        student = self.student
+        if is_attendance:
+            student.score += ATTENDANCE_SCORE
+        else:
+            student.score -= ATTENDANCE_SCORE
+        student.save()
+        self.save()
 
     def get_attendance(self):
         return {
@@ -213,8 +233,8 @@ class StudentInLesson(models.Model):
 
     def get_homework_final(self):
         return {
-                False: 'Сдано',
-                True: 'Не сдано',
+                True: 'Сдано',
+                False: 'Не сдано',
             }[self.is_homework_final]
 
     def get_homework_in_deadline(self):
@@ -228,8 +248,18 @@ class StudentInLesson(models.Model):
         return {
                 False: 'Нет',
                 True: 'Да',
-                None: 'Тест не пройден',
+                None: 'Тест не начат',
         }[self.is_homework_in_deadline]
+
+    def checked_homework_final(self):
+        if self.is_homework_final:
+            return 'checked'
+        return ''
+
+    def checked_attendance(self):
+        if self.attendance:
+            return 'checked'
+        return ''
 
 
 img_files_del(Course)

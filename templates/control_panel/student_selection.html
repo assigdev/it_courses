@@ -14,14 +14,14 @@
         <tbody>
         {% for student in course.students.all %}
             <tr>
-                <th scope="row">{{ forloop.id }}</th>
+                <th scope="row">{{ forloop.counter }}</th>
                 <td>{{ student.user.get_full_name }}</td>
                 <td>
                     <select class="form-control js-state"
                         name="status"
-                        data-url="{% url 'control:selection' course.slug %}"
                         data-course_id="{{ course.id }}"
                         data-student_id="{{ student.id }}"
+                        data-csrf_token="{{ csrf_token }}"
                     >
                         {% get_status_options %}
                     </select>

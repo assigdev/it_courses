@@ -12,7 +12,7 @@
         <form method="post">
             {% csrf_token %}
             {% include 'includes/form_default.html' %}
-            <button class="btn btn-outline-primary" type="submit">Изенить</button>
+            <button class="btn btn-outline-primary col-md-2" type="submit">Изенить</button>
         </form>
         <div class="row">
             <a class="link-mod" href="{% url 'courses:users:update_student' %}">Изменить профиль студент</a>

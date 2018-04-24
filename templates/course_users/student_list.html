@@ -18,10 +18,10 @@
             <tr>
                 <th scope="row">{{ forloop.counter }}</th>
                 <td>{{ student.user.get_full_name }}</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>{{ student.quiz_count }}</td>
+                <td>{{ student.homework_count }}</td>
+                <td>{{ student.get_lessons_count }}</td>
+                <td>{{ student.get_finish_courses }}</td>
                 <td>{{ student.score }}</td>
             </tr>
         {% endfor %}

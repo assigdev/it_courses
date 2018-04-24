@@ -46,6 +46,9 @@ class Teacher(models.Model):
     def get_finish_course_count(self):
         return self.course_set.filter(state='close').count()
 
+    def get_first_course(self):
+        return self.course_set.exclude(state='close').first()
+
 
 img_files_del(Teacher)
 
@@ -74,3 +77,12 @@ class Student(models.Model):
 
     def get_open_curses(self):
         return self.course_set.filter(coursestudent__status__in=('active', 'finish'))
+
+    def get_first_course(self):
+        return self.get_open_curses().first()
+
+    def get_lessons_count(self):
+        return self.studentinlesson_set.filter(attendance=True).count()
+
+    def get_finish_courses(self):
+        return self.course_set.filter(state='finish').count()

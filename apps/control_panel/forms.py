@@ -13,9 +13,7 @@ class SelectionForm(forms.Form):
         course_id = self.cleaned_data['course_id']
         student_id = self.cleaned_data['student_id']
         status = self.cleaned_data['status']
-        course = get_object_or_404(Course, id=course_id)
-        student = get_object_or_404(Student, id=student_id)
-        obj = get_object_or_404(CourseStudent, student=student, course=course)
+        obj = get_object_or_404(CourseStudent, student__id=student_id, course__id=course_id)
         obj.status = status
         obj.save()
         return obj
@@ -24,33 +22,26 @@ class SelectionForm(forms.Form):
 class VisitForm(forms.Form):
     lesson_id = forms.IntegerField(required=True)
     student_id = forms.IntegerField(required=True)
-    attendance = forms.BooleanField(required=True)
+    attendance = forms.BooleanField(required=False)
 
     def save(self):
         lesson_id = self.cleaned_data['lesson_id']
         student_id = self.cleaned_data['student_id']
         attendance = self.cleaned_data['attendance']
-        # lesson = get_object_or_404(Course, id=lesson_id)
-        # student = get_object_or_404(Student, id=student_id)
         obj = StudentInLesson.objects.get(lesson__id=lesson_id, student__id=student_id)
-        obj.attendance = attendance
-        obj.save()
+        obj.set_attendance(attendance)
         return obj
 
 
 class HomeworkForm(forms.Form):
     lesson_id = forms.IntegerField(required=True)
     student_id = forms.IntegerField(required=True)
-    is_homework_final = forms.NullBooleanField(required=True)
+    is_homework_final = forms.BooleanField(required=False)
 
     def save(self):
         lesson_id = self.cleaned_data['lesson_id']
         student_id = self.cleaned_data['student_id']
         is_homework_final = self.cleaned_data['is_homework_final']
-        # lesson = get_object_or_404(Course, id=lesson_id)
-        # student = get_object_or_404(Student, id=student_id)
         obj = StudentInLesson.objects.get(lesson__id=lesson_id, student__id=student_id)
-        obj.is_homework_final = is_homework_final
-        obj.is_homework_in_deadline = True
-        obj.save()
+        obj.set_homework_result(is_homework_final)
         return obj

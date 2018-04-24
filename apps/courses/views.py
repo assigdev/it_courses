@@ -48,22 +48,16 @@ class LessonListView(SecondHeaderMixin, ListView):
     url_name = 'courses:lessons'
     header_path = 'lesson'
 
-    def get_slug(self):
-        slug = self.kwargs['slug']
-        if slug == 'base':
-            return self.get_menu_queryset().first().slug
-        return slug
-
     def get_queryset(self):
-        return super().get_queryset().filter(course__slug=self.get_slug())
+        return super().get_queryset().filter(course__slug=self.kwargs['slug'])
 
     def get_menu_queryset(self):
         return self.request.user.student.get_open_curses()
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data()
-        context['current_lesson'] = self.get_queryset().get_current_lesson
-        context['course_slug'] = self.get_slug()
+        context['current_lesson'] = self.get_queryset().get_current_lesson()
+        context['course_slug'] = self.kwargs['slug']
         return context
 
 

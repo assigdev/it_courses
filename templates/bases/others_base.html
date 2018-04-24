@@ -8,8 +8,6 @@
 
             {% with menu_courses.count as courses_count %}
                 {% for course in menu_courses %}
-
-                    {#                        {% include 'includes/menu_bottom_url_with_attr.html' with name=course.title url_name=url_name url_attr=course.slug %}#}
                     <li class="nav-item">
                         {% url url_name course.slug as url %}
                         <a class="nav-link {% is_url_active url %}" href="{{ url }}">{{ course.title }}</a>

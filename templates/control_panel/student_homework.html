@@ -4,7 +4,7 @@
 {% block content %}
     {% for lesson in course.lessons.all %}
         <a class="badge badge-success"
-           href="{% url 'control:visit' course.slug lesson.slug %}">{{ lesson.number }}</a>
+           href="{% url 'control:homework' course.slug lesson.slug %}">{{ lesson.number }}</a>
     {% endfor %}
     {% if lesson != None %}
         <h3 class="text-center">{{ lesson.number }}. {{ lesson.title }}</h3>
@@ -13,7 +13,8 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Студент</th>
-                <th scope="col">Был на занятии?</th>
+                <th scope="col">Ссылка на ДЗ</th>
+                <th scope="col">Статус ДЗ</th>
             </tr>
             </thead>
             <tbody>
@@ -23,13 +24,16 @@
                     <th scope="row">{{ forloop.counter }}</th>
                     <td>{{ student.user.get_full_name }}</td>
                     <td>
+                        {{ student_in_lesson.homework_link|default:'Не указано' }}
+                    </td>
+                    <td>
                         <form action="post">
                             {% csrf_token %}
                             <input style="display: none" type="number" name="lesson_id" required=""
                                    value="{{ lesson.id }}">
                             <input style="display: none" type="number" name="student_id" required=""
                                    value="{{ student.id }}">
-                            {{ form.attendance|add_checked:student_in_lesson.checked_attendance }}
+                            {{ form.is_homework_final|add_checked:student_in_lesson.checked_homework_final }}
                         </form>
                     </td>
                 </tr>

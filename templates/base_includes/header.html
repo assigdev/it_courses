@@ -18,7 +18,7 @@
                 <a class="nav-link" href="{{ url }}">Курсы</a>
             </li>
             {% if user.is_active_student %}
-                {% url 'courses:lessons' 'base' as url %}
+                {% url 'courses:lessons' user.student.get_first_course.slug as url %}
                 <li class="nav-item {% is_base_url_active 'lesson' %}">
                     <a class="nav-link" href="{{ url }}">Занятия</a>
                 </li>
@@ -31,9 +31,9 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 
-                        <a class="dropdown-item" href="{% url 'control:selection' 'base' %}">Статусы студентов</a>
-                        <a class="dropdown-item" href="{% url 'control:visit' 'base' %}">Посещения</a>
-                        <a class="dropdown-item" href="{% url 'control:homework' 'base' %}">Домашние задания</a>
+                        <a class="dropdown-item" href="{% url 'control:selection' user.teacher.get_first_course.slug %}">Статусы студентов</a>
+                        <a class="dropdown-item" href="{% url 'control:visit_current' user.teacher.get_first_course.slug %}">Посещения</a>
+                        <a class="dropdown-item" href="{% url 'control:homework_current' user.teacher.get_first_course.slug %}">Домашние задания</a>
                     </div>
                 </li>
             {% endif %}
