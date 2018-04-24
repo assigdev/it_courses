@@ -1,0 +1,24 @@
+version: '2'
+services:
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_USER=it_courses_user
+      - POSTGRES_PASSWORD=it_courses_pass
+    volumes:
+      - db-data:/var/lib/postgresql/data/
+  backend:
+    build: .
+    environment:
+      - DB_USER=it_courses_user
+      - DB_PASSWORD=it_courses_pass
+      - DB_HOST=db
+    depends_on:
+      - db
+    volumes:
+      - media:/opt/it_courses/media
+      - staticfiles:/opt/it_courses/staticfiles
+volumes:
+  db-data:
+  media:
+  staticfiles:

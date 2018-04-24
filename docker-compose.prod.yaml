@@ -1,0 +1,32 @@
+version: '2'
+services:
+  db:
+    restart: always
+  backend:
+    command: uwsgi /opt/it_courses/uwsgi.ini
+    restart: always
+    environment:
+      - DB_NAME=it_courses_db
+      - DB_USER=it_courses_user
+      - DB_PASSWORD=it_courses_pass
+      - DB_HOST=db
+      - SITE_URl=35.196.4.115
+      - ALLOWED_HOSTS=35.196.4.115
+      - VIRTUAL_PROTO=uwsgi
+      - VIRTUAL_HOST=35.196.4.115
+      - IS_PRODUCTION=1
+  nginx-proxy:
+    restart: always
+    image: jwilder/nginx-proxy
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - /etc/nginx/vhost.d
+      - /usr/share/nginx/html
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+volumes:
+  db-data:
+  media:
+  staticfiles:
+
