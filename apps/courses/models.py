@@ -147,7 +147,7 @@ class Lesson(models.Model):
 
 QUIZ_STATUS = (
     ('on', 'Пройден'),
-    ('off', 'Не пройден'),
+    ('off', 'Провален'),
     ('not_start', 'Не начат'),
 )
 
@@ -156,11 +156,11 @@ class StudentInLesson(models.Model):
     student = models.ForeignKey(Student, verbose_name='ученик', on_delete=models.CASCADE)
     lesson = models.ForeignKey(Lesson, verbose_name='Занятие', on_delete=models.CASCADE)
     attendance = models.BooleanField('Был на занятии', default=False)
-    is_homework_final = models.BooleanField('Сдана', default=False)
-    is_homework_in_deadline = models.NullBooleanField('В срок', default=None)
+    is_homework_final = models.BooleanField('ДЗ сдана', default=False)
+    is_homework_in_deadline = models.NullBooleanField('ДЗ сдано в срок', default=None)
     homework_link = models.URLField('Ссылка на ДЗ', blank=True)
     quiz_status = models.CharField('Статус тестирования', max_length=9, default='not_start', choices=QUIZ_STATUS)
-    is_quiz_in_deadline = models.NullBooleanField('В срок', default=None)
+    is_quiz_in_deadline = models.NullBooleanField('Тест сдан в срок', default=None)
     quiz_result = models.OneToOneField(QuizResult, 'Результат тестирования', default=None, blank=True, null=True)
     homework_score = models.PositiveSmallIntegerField('Очки за домашнее задание', default=0)
     quiz_score = models.PositiveSmallIntegerField('Очки за тестирование', default=0)

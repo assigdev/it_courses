@@ -1,5 +1,10 @@
 {% extends 'bases/others_base.html' %}
+{% load staticfiles %}
 
 {% block content %}
     {% include 'includes/lesson_content.html' %}
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/ajax_form.js' %}"></script>
 {% endblock %}

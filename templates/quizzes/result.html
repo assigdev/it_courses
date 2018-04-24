@@ -3,10 +3,83 @@
 {% block title %}{{ quiz.title }}{% endblock %}
 
 {% block content %}
-    <h2 class="title text-center">{{ quiz.title }}</h2>
+    <h2 class="title text-center">Результаты Тестировния - {{ quiz.title }}</h2>
+    {% include 'includes/quiz_info.html' %}
+    <p><strong>Процент правильных ответов: </strong>{{ quiz_result.get_result_percent }} %</p>
+    <p><strong>Количество правильных ответов: </strong>{{ quiz_result.result }} </p>
+    <br>
+    <br>
 
-    <h4>ПРойдено наверное</h4>
+    <h4>Подробный разбор</h4>
+    <br>
+    {% if quiz.open %}
 
+        <div class="row">
+            <div class="col-md-5"><h5>Правильные ответы:</h5></div>
+            <div class="col-md-5"><h5>Ваши ответы:</h5></div>
+        </div>
 
+        {% for question, student_answer in results %}
+            {% if question.type == 'chr' %}
+                <p
+                        {% if question.chr_answer == student_answer.answer_chr %}
+                            class="text-success"
+                        {% else %}
+                            class="text-danger"
+                        {% endif %}
+                >
+                    {{ question.position }}) {{ question.content }}
+                </p>
+                <div class="row">
+                    <div class="col-md-5"><h6>{{ question.chr_answer }}</h6></div>
+                    <div class="col-md-5"><h6>{{ student_answer.answer_chr }}</h6></div>
+                </div>
+            {% else %}
+                <p
+                        {% if student_answer.answer_var.is_true %}
+                            class="text-success"
+                        {% else %}
+                            class="text-danger"
+                        {% endif %}
+                >
+                    {{ question.position }}) {{ question.content }}
+                </p>
+                <div class="row">
+                    <div class="col-md-5">
+                        {% for answer in question.answervar_set.all %}
+                            <p>
+                                <label>
+                                    <input
+                                            name="answer_{{ question.position }}"
+                                            type="radio"
+                                            {% if answer.is_true %}checked="checked"{% endif %}
+                                    >
+                                    {{ answer.content }}
+                                </label>
+                            </p>
+                        {% endfor %}
+                    </div>
+                    <div class="col-md-5">
+                        {% for answer in question.answervar_set.all %}
+                            <p>
+                                <label>
+                                    <input disabled
+                                           name="student_answer_{{ question.position }}"
+                                           type="radio"
+                                           {% if answer == student_answer.answer_var %}checked{% endif %}
+                                    >
+                                    {{ answer.content }}
+                                </label>
+                            </p>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <h6>Подробный разбор данного теста, к сожалению закрыт.</h6>
+    {% endif %}
+    <br>
+    <br>
 
 {% endblock %}

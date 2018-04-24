@@ -24,7 +24,11 @@
                     <th scope="row">{{ forloop.counter }}</th>
                     <td>{{ student.user.get_full_name }}</td>
                     <td>
-                        {{ student_in_lesson.homework_link|default:'Не указано' }}
+                        {% if student_in_lesson.homework_link|length > 3 %}
+                            <a href="{{ student_in_lesson.homework_link }}" target="_blank">Перейти</a>
+                        {% else %}
+                            'Не указано'
+                        {% endif %}
                     </td>
                     <td>
                         <form action="post">
@@ -43,5 +47,5 @@
 {% endblock %}
 
 {% block scripts %}
-    <script src="{% static 'js/control_center.js' %}"></script>
+    <script src="{% static 'js/ajax_form.js' %}"></script>
 {% endblock %}

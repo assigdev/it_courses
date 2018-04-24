@@ -1,11 +1,14 @@
-from django.views.generic import ListView, DetailView
-from django.shortcuts import redirect
-from .models import Course, CourseStudent, Lesson
 from django.contrib import messages
-from apps.course_users.mixins import StudentRequiredMixin
-from apps.main.mixins import SecondHeaderMixin
 from django.shortcuts import Http404
+from django.shortcuts import redirect
+from django.views.generic import ListView, DetailView
+
+from apps.course_users.mixins import StudentRequiredMixin
 from apps.main.mixins import HeaderMixin
+from apps.main.mixins import SecondHeaderMixin
+from .forms import HomeworkLinkForm
+from .mixins import AjaxFormMixin
+from .models import Course, CourseStudent, Lesson
 
 
 class CourseListView(HeaderMixin, ListView):
@@ -41,12 +44,14 @@ def course_enroll(request, slug):
     return redirect('courses:detail', course.slug)
 
 
-class LessonListView(SecondHeaderMixin, ListView):
+class LessonListView(SecondHeaderMixin, AjaxFormMixin, ListView):
     model = Lesson
     template_name = 'courses/lessons.html'
     menu_title = 'Занятия'
     url_name = 'courses:lessons'
     header_path = 'lesson'
+    success_message = 'Ссылка успешно сохранена'
+    form = HomeworkLinkForm
 
     def get_queryset(self):
         return super().get_queryset().filter(course__slug=self.kwargs['slug'])

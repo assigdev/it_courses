@@ -3,7 +3,10 @@
 {% block title %}{{ quiz.title }}{% endblock %}
 
 {% block content %}
-    <h2 class="title text-center">{{ quiz.title }}</h2>
+    <h2 class="title text-center">Тестирование - {{ quiz.title }}</h2>
+    {% include 'includes/quiz_info.html' %}
+    <br>
+    <br>
 
     <form method="post">
         {% csrf_token %}

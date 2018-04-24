@@ -1,0 +1,11 @@
+<h4>Информация</h4>
+<br>
+<p>
+    <a href="{% url 'courses:lesson' quiz.lesson.course.slug quiz.lesson.slug %}">
+        <i class="fas fa-arrow-alt-circle-left"></i>
+        Вернуться к Занятию
+    </a>
+</p>
+<p><strong>Дедлайн: </strong>{{ quiz.lesson.quiz_deadline }} </p>
+<p><strong>Необходимый процент правильных ответов: </strong>{{ quiz.result }} % </p>
+<p><strong>Количество вопросов: </strong>{{ quiz.questions.count }}</p>

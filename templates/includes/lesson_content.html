@@ -1,4 +1,4 @@
-{% load lesson_tags %}
+{% load lesson_tags class_atr_for_field %}
 
 {% if not lesson is None %}
 
@@ -23,7 +23,10 @@
         <p><strong>Балов набрано: </strong>{{ student_in_lesson.quiz_score }}</p>
         {% if student_in_lesson.quiz_status == 'not_start' %}
             <p><a class="btn btn-outline-success" href="{% url 'quiz:detail' lesson.quiz.slug %}">Пройти тест</a></p>
+        {% else %}
+            <p><a class="btn btn-outline-success" href="{% url 'quiz:result' lesson.quiz.slug %}">Посмотреть результаты</a></p>
         {% endif %}
+
     {% endif %}
 
     {% if lesson.have_homework %}
@@ -33,7 +36,22 @@
         <p><strong>Дедлайн: </strong>{{ lesson.homework_deadline }} </p>
         <p><strong>В срок: </strong>{{ student_in_lesson.get_homework_in_deadline }}</p>
         <p><strong>Балов набрано: </strong>{{ student_in_lesson.homework_score }}</p>
+        <p>
+        <form>
+            <strong>Ссылка на репозиторий: </strong>
+            {% csrf_token %}
+            <input style="display: none" type="number" name="lesson_id" required=""
+                   value="{{ lesson.id }}">
+            <input style="display: none" type="number" name="student_id" required=""
+                   value="{{ user.student.id }}">
+{#            {{ form.link }}#}
+            <input type="url" name="link" id="id_link" class="form-control col-md-3" value="{{ student_in_lesson.homework_link }}">
+            <a href="#save-link" class="js-ajax-send text-center">Изменить</a>
+        </form>
+        </p>
         <p><strong>Задание: </strong>{{ lesson.homework|safe }}</p>
+
+
     {% endif %}
 
     <br>

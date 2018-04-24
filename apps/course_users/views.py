@@ -1,12 +1,13 @@
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
-from django.shortcuts import reverse, HttpResponseRedirect
-from .models import Teacher, Student
-from apps.courses.models import Course
-from .forms import StudentForm
-from django.contrib.auth.mixins import LoginRequiredMixin
-from .mixins import StudentRequiredMixin
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import reverse, HttpResponseRedirect
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
+
+from apps.courses.models import Course
 from apps.main.mixins import HeaderMixin
+from .forms import StudentForm
+from .mixins import StudentRequiredMixin
+from .models import Teacher, Student
 
 
 class TeacherListView(HeaderMixin, ListView):

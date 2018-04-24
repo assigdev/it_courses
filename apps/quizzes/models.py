@@ -84,8 +84,8 @@ class QuizResult(models.Model):
         for question in self.quiz.questions.all():
             answer = post_data['answer_%s' % question.position]
             if question.type == 'chr':
+                StudentAnswer.objects.create(user_answer=self, question=question, answer_chr=question.chr_answer)
                 if answer == question.chr_answer:
-                    StudentAnswer.objects.create(user_answer=self, question=question, answer_chr=question.chr_answer)
                     success_number += 1
             else:
                 answer_obj = AnswerVar.objects.get(id=answer)
@@ -97,7 +97,7 @@ class QuizResult(models.Model):
         return self
 
     def get_result_percent(self):
-        return self.result * 100 / self.quiz.questions.count()
+        return self.result * 100 // self.quiz.questions.count()
 
 
 class StudentAnswer(models.Model):

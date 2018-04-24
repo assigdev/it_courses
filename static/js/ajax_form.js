@@ -21,11 +21,7 @@ $(function () {
     })
   });
 
-  $('.js-ajax-send').change( function () {
-    // const course_id = $(this).data('course_id');
-    // const student_id = $(this).data('student_id');
-    // const csrf_token = $(this).data('csrf_token');
-    // const state = $(this).val();
+  $('.js-ajax-send').click( function () {
       var form = $(this).parent();
       console.log(form.serialize());
     $.ajax({
@@ -53,5 +49,5 @@ function success_func(data) {
 }
 
 function error_func() {
-    $('.ajax-alert').addClass('alert-danger').show().find('strong').text('Не валидные данные');
+    $('.ajax-alert').addClass('alert-danger').show().find('strong').text('Сервер не отвечает');
 }
