@@ -50,6 +50,9 @@ update:
 	docker-compose exec backend python manage.py migrate
 	docker-compose exec backend python manage.py collectstatic
 
+load_fixtures:
+	docker-compose exec backend python manage.py loaddata fixtures.json
+
 dump: ## dump db, usage 'make dump path=/path/to/dumps'
 	docker-compose exec --user postgres $(DB) pg_dumpall --clean | gzip > $(path)/project-$(DATE).sql.gz
 

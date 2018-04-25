@@ -2,7 +2,7 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
-import martor.models
+from ckeditor_uploader.fields import RichTextUploadingField
 
 
 class Migration(migrations.Migration):
@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
             name='AnswerVar',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('content', martor.models.MartorField(blank=True, verbose_name='текст ответа')),
+                ('content', RichTextUploadingField(blank=True, verbose_name='текст ответа')),
                 ('is_true', models.BooleanField(default=False, verbose_name='Верный ответ')),
                 ('position', models.SmallIntegerField(default=0, verbose_name='Позиция')),
             ],
@@ -30,7 +30,7 @@ class Migration(migrations.Migration):
             name='Question',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('content', martor.models.MartorField(blank=True, verbose_name='текст вопроса')),
+                ('content', RichTextUploadingField(blank=True, verbose_name='текст вопроса')),
                 ('type', models.CharField(choices=[('chr', 'Один ответ'), ('var', 'Один верный из вариантов')], default='var', max_length=3, verbose_name='Тип вопроса')),
                 ('chr_answer', models.CharField(blank=True, max_length=100, verbose_name='Верный ответ')),
                 ('position', models.SmallIntegerField(default=0, verbose_name='Позиция')),

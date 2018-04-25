@@ -18,6 +18,15 @@ services:
     volumes:
       - media:/opt/it_courses/media
       - staticfiles:/opt/it_courses/staticfiles
+    links:
+      - redis
+
+  redis:
+    image: 'bitnami/redis:latest'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - '6379:6379'
 volumes:
   db-data:
   media:

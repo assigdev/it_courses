@@ -4,8 +4,8 @@ import apps.course_users.models
 from django.conf import settings
 from django.db import migrations, models
 import django.db.models.deletion
-import martor.models
 import stdimage.models
+from ckeditor_uploader.fields import RichTextUploadingField
 
 
 class Migration(migrations.Migration):
@@ -36,7 +36,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('img', stdimage.models.StdImageField(blank=True, upload_to=apps.course_users.models.teacher_img_path, verbose_name='Фотография')),
-                ('biography', martor.models.MartorField(verbose_name='Биография')),
+                ('biography', RichTextUploadingField(verbose_name='Биография')),
                 ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='teacher', to=settings.AUTH_USER_MODEL)),
             ],
             options={

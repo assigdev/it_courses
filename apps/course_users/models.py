@@ -1,9 +1,9 @@
 from django.db import models
 from django.conf import settings
-from martor.models import MartorField
 from utils.shortcuts.for_stdimage import img_files_del
 from stdimage import StdImageField
 from utils.img_paths import HASH_CHUNK_SIZE
+from ckeditor_uploader.fields import RichTextUploadingField
 
 
 def teacher_img_path(instance, filename):
@@ -34,7 +34,7 @@ class Teacher(models.Model):
         variations={'thumb': (400, 225, True)},
         blank=True
     )
-    biography = MartorField("Биография")
+    biography = RichTextUploadingField("Биография")
 
     class Meta:
         verbose_name = "Преподаватель"

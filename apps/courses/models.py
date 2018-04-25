@@ -1,15 +1,15 @@
+from ckeditor_uploader.fields import RichTextUploadingField
 from django.db import models
+from django.db import transaction
+from django.utils import timezone
+from stdimage import StdImageField
+
 from apps.course_users.models import Teacher, Student
 from apps.quizzes.models import Quiz
-from django.utils import timezone
 from apps.quizzes.models import QuizResult
-from utils.shortcuts.for_stdimage import img_files_del
-from stdimage import StdImageField
-from utils.img_paths import HASH_CHUNK_SIZE
-from ckeditor_uploader.fields import RichTextUploadingField
 from it_courses.settings import LEVEL, HOMEWORK_SCORE, TEST_SCORE, ATTENDANCE_SCORE, DEADLINE_COEFFICIENT
-from django.db import transaction
-
+from utils.img_paths import HASH_CHUNK_SIZE
+from utils.shortcuts.for_stdimage import img_files_del
 
 STATES = (
     ('active', 'Курс уже идет'),

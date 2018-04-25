@@ -4,7 +4,7 @@ import apps.courses.models
 from django.db import migrations, models
 import django.db.models.deletion
 import django.utils.timezone
-import martor.models
+from ckeditor_uploader.fields import RichTextUploadingField
 import stdimage.models
 import utils.mixins.models
 
@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
                 ('state', models.CharField(choices=[('active', 'Активен'), ('close', 'Завершен'), ('reg', 'Набор, регистрация')], max_length=6, verbose_name='статус')),
                 ('max_user_count', models.PositiveSmallIntegerField(verbose_name='Максимальное количество учащихся')),
                 ('preview', models.TextField(max_length=300, verbose_name='Превью описание')),
-                ('about', martor.models.MartorField(verbose_name='Описание курса')),
+                ('about', RichTextUploadingField(verbose_name='Описание курса')),
                 ('start_date', models.DateField(verbose_name='Дата начала курса')),
                 ('end_date', models.DateField(verbose_name='Дата завершения курса')),
                 ('selection_test', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='quizzes.Quiz', verbose_name='Отборочный тест')),
@@ -57,8 +57,8 @@ class Migration(migrations.Migration):
                 ('slug', models.SlugField(blank=True, max_length=20)),
                 ('number', models.PositiveSmallIntegerField(default=1, verbose_name='Номер занятия')),
                 ('date', models.DateField(default=django.utils.timezone.now, verbose_name='Дата занятия')),
-                ('content', martor.models.MartorField(blank=True, verbose_name='Материал занятия')),
-                ('home_work', martor.models.MartorField(blank=True, verbose_name='Домашнее задание')),
+                ('content', RichTextUploadingField(blank=True, verbose_name='Материал занятия')),
+                ('home_work', RichTextUploadingField(blank=True, verbose_name='Домашнее задание')),
                 ('home_work_deadline', models.DateField(blank=True, verbose_name='Дедлайн для домашней работы')),
                 ('quiz', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='quizzes.Quiz', verbose_name='Тестирование')),
             ],
