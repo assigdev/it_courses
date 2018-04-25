@@ -39,6 +39,9 @@ endif
 	pipenv run python manage.py runserver 0.0.0.0:$(PORT)
 
 prod:
+ifeq ($(b), 1)
+	docker-compose -f docker-compose.yaml -f docker-compose.prod.yaml up --build
+endif
 	docker-compose -f docker-compose.yaml -f docker-compose.prod.yaml up --build
 
 configure:
