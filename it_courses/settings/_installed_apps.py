@@ -21,7 +21,6 @@ MY_APPS = [
 
 
 INSTALLED_APPS = [
-    # 'raven.contrib.django.raven_compat',
     'ckeditor',
     'ckeditor_uploader',
     'nested_admin',
@@ -29,6 +28,10 @@ INSTALLED_APPS = [
 
 DEV_APS = [
 
+]
+
+PROD_APS = [
+    'raven.contrib.django.raven_compat',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + INSTALLED_APPS + MY_APPS

@@ -123,6 +123,7 @@ class Lesson(models.Model):
     class Meta:
         verbose_name = 'Занятие'
         verbose_name_plural = 'Занятия'
+        ordering = ['number']
 
     def have_homework(self):
         if len(self.homework) > 10:
