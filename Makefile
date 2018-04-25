@@ -40,9 +40,9 @@ endif
 
 prod:
 ifeq ($(b), 1)
-	docker-compose -f docker-compose.yaml -f docker-compose.prod.yaml up
-endif
 	docker-compose -f docker-compose.yaml -f docker-compose.prod.yaml up --build
+endif
+	docker-compose -f docker-compose.yaml -f docker-compose.prod.yaml up
 
 configure:
 	docker-compose exec backend python manage.py migrate
