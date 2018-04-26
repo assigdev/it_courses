@@ -10,7 +10,7 @@ register = template.Library()
 @register.simple_tag(takes_context=True)
 def get_user_badge(context, course):
     user = context['request'].user
-    if not user.is_authenticated or not user.is_student:
+    if not user.is_authenticated or not user.is_student():
         return ''
     try:
         obj = CourseStudent.objects.get(course=course, student=user.student)
@@ -50,7 +50,7 @@ def get_course_detail_button(context):
         return safe(tags_data.USER_NOT_AUTH % reverse('accounts:login'))
     if not user.email_confirmed:
         return safe('<h5 class="text-info">Подтвердите почту для доступа к курсу.</p>')
-    if not user.is_student:
+    if not user.is_student():
         return safe(tags_data.USER_NOT_STUD % (reverse('courses:users:create_student'), course.id))
     try:
         obj = CourseStudent.objects.get(course=course, student=user.student)

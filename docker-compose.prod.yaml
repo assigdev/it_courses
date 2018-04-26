@@ -10,7 +10,7 @@ services:
       - DB_USER=it_courses_user
       - DB_PASSWORD=it_courses_pass
       - DB_HOST=db
-      - SITE_URl=courses.assig.ru
+      - SITE_URL=courses.assig.ru
       - ALLOWED_HOSTS=courses.assig.ru
       - VIRTUAL_PROTO=uwsgi
       - VIRTUAL_HOST=courses.assig.ru
