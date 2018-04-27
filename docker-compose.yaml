@@ -17,7 +17,7 @@ services:
       - db
     volumes:
       - media:/opt/it_courses/media
-      - static:/opt/it_courses/static
+      - staticfiles:/opt/it_courses/staticfiles
     links:
       - redis
 
@@ -30,4 +30,4 @@ services:
 volumes:
   db-data:
   media:
-  static:
+  staticfiles:
