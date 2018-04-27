@@ -19,7 +19,7 @@
             </thead>
             <tbody>
             {% for student in course.students.all %}
-                {% get_student_in_lesson lesson as student_in_lesson %}
+                {% get_student_in_lesson lesson student as student_in_lesson %}
                 <tr>
                     <th scope="row">{{ forloop.counter }}</th>
                     <td>{{ student.user.get_full_name }}</td>

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Quiz, Question, AnswerVar, QuizResult
+from .models import Quiz, Question, AnswerVar
 import nested_admin
 
 
@@ -19,6 +19,3 @@ class QuestionInline(nested_admin.NestedStackedInline):
 @admin.register(Quiz)
 class QuizAdmin(nested_admin.NestedModelAdmin):
     inlines = [QuestionInline]
-
-
-admin.site.register(QuizResult)

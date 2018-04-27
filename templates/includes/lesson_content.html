@@ -2,7 +2,7 @@
 
 {% if not lesson is None %}
 
-    {% get_student_in_lesson lesson as student_in_lesson %}
+    {% get_student_in_lesson lesson user.student as student_in_lesson %}
 
     {% for lesson in lesson_list %}
         <a class="badge badge-success" href="{% url 'courses:lesson' course_slug lesson.slug %}">{{ lesson.number }}</a>

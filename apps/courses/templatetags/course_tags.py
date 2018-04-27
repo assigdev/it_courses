@@ -23,9 +23,9 @@ def get_user_badge(context, course):
 
 @register.simple_tag(takes_context=True)
 def get_status_options(context):
-    user = context['request'].user
     course = context['course']
-    obj = CourseStudent.objects.get(course=course, student=user.student)
+    student = context['student']
+    obj = CourseStudent.objects.get(course=course, student=student)
     return safe(obj.get_status_options())
 
 

@@ -1,3 +1,12 @@
+from django.shortcuts import get_object_or_404, Http404
+
+
+def get_object_or_none(klass, *args, **kwargs):
+    try:
+        get_object_or_404(klass, *args, **kwargs)
+    except Http404:
+        return None
+
 
 def get_unique_slug(for_slug, model, size=None):
     from slugify import slugify
