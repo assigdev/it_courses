@@ -113,7 +113,7 @@ class Lesson(models.Model):
     date = models.DateField('Дата занятия', default=timezone.now)
     content = RichTextUploadingField('Материал занятия', blank=True)
     homework = RichTextUploadingField('Домашнее задание', blank=True)
-    homework_level = models.PositiveSmallIntegerField('Уровень сложности', choices=LEVEL, default=3)
+    homework_level = models.PositiveSmallIntegerField('Уровень сложности Домашней Работы', choices=LEVEL, default=3)
     homework_deadline = models.DateField('Дедлайн для домашней работы', blank=True, null=True)
     quiz = models.OneToOneField(Quiz, verbose_name='Тестирование', default=None,  blank=True, null=True, on_delete=models.SET_NULL)
     quiz_deadline = models.DateField('Дедлайн для тестирования', blank=True, null=True)
@@ -176,7 +176,7 @@ class StudentInLesson(models.Model):
         result_percent = quiz_result.get_result_percent()
         student = self.student
 
-        if self.lesson.quiz_deadline > timezone.now().date():
+        if self.lesson.quiz_deadline and self.lesson.quiz_deadline > timezone.now().date():
             self.is_quiz_in_deadline = True
             deadline_coefficient = DEADLINE_COEFFICIENT
         else:
@@ -196,7 +196,7 @@ class StudentInLesson(models.Model):
 
     @transaction.atomic
     def set_homework_result(self, is_final):
-        if self.lesson.homework_deadline > timezone.now().date():
+        if self.lesson.homework_deadline and self.lesson.homework_deadline > timezone.now().date():
             self.is_homework_in_deadline = True
             deadline_coefficient = DEADLINE_COEFFICIENT
         else:
