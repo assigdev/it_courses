@@ -30,4 +30,4 @@ services:
 volumes:
   db-data:
   media:
-  staticfiles:
+  static:
