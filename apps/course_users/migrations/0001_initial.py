@@ -35,7 +35,7 @@ class Migration(migrations.Migration):
             name='Teacher',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('img', stdimage.models.StdImageField(blank=True, upload_to=apps.course_users.models.teacher_img_path, verbose_name='Фотография')),
+                ('img', stdimage.models.StdImageField(blank=True, upload_to=apps.course_users.models.get_img_path, verbose_name='Фотография')),
                 ('biography', RichTextUploadingField(verbose_name='Биография')),
                 ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='teacher', to=settings.AUTH_USER_MODEL)),
             ],

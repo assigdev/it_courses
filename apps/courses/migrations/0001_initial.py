@@ -6,7 +6,6 @@ import django.db.models.deletion
 import django.utils.timezone
 from ckeditor_uploader.fields import RichTextUploadingField
 import stdimage.models
-import utils.mixins.models
 
 
 class Migration(migrations.Migration):
@@ -24,7 +23,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('title', models.CharField(max_length=100, verbose_name='Название')),
-                ('img', stdimage.models.StdImageField(blank=True, upload_to=apps.courses.models.course_img_path, verbose_name='Фотография')),
+                ('img', stdimage.models.StdImageField(blank=True, upload_to=apps.courses.models.get_img_path, verbose_name='Фотография')),
                 ('slug', models.SlugField(max_length=20)),
                 ('state', models.CharField(choices=[('active', 'Активен'), ('close', 'Завершен'), ('reg', 'Набор, регистрация')], max_length=6, verbose_name='статус')),
                 ('max_user_count', models.PositiveSmallIntegerField(verbose_name='Максимальное количество учащихся')),
@@ -38,7 +37,7 @@ class Migration(migrations.Migration):
                 'verbose_name': 'Курс',
                 'verbose_name_plural': 'Курсы',
             },
-            bases=(utils.mixins.models.ModelAutoSlugMixin, models.Model),
+            bases=(models.Model,),
         ),
         migrations.CreateModel(
             name='CourseStudent',
@@ -66,7 +65,7 @@ class Migration(migrations.Migration):
                 'verbose_name': 'Занятие',
                 'verbose_name_plural': 'Занятия',
             },
-            bases=(utils.mixins.models.ModelAutoSlugMixin, models.Model),
+            bases=(models.Model,),
         ),
         migrations.CreateModel(
             name='StudentInLesson',

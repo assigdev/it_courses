@@ -8,7 +8,7 @@ from apps.course_users.models import Teacher, Student
 from apps.quizzes.models import Quiz
 from apps.quizzes.models import QuizResult
 from it_courses.settings import LEVEL, HOMEWORK_SCORE, TEST_SCORE, ATTENDANCE_SCORE, DEADLINE_COEFFICIENT
-from utils.img_paths import HASH_CHUNK_SIZE
+from utils.img_paths import get_img_path
 from utils.shortcuts.for_stdimage import img_files_del
 
 STATES = (
@@ -18,31 +18,11 @@ STATES = (
 )
 
 
-def course_img_path(instance, filename):
-    import os.path
-    import hashlib
-    parts = os.path.splitext(filename)
-    ctx = hashlib.sha256()
-    if instance.img.multiple_chunks():
-        for data in instance.img.chunks(HASH_CHUNK_SIZE):
-            ctx.update(data)
-    else:
-        ctx.update(instance.img.read())
-    hex_path = ctx.hexdigest()
-    return '{0}/{1}/{2}/{3}{4}'.format(
-        'courses',
-        hex_path[0:2],
-        hex_path[2:18],
-        hex_path[18:34],
-        parts[1]
-    )
-
-
 class Course(models.Model):
     title = models.CharField('Название', max_length=100)
     img = StdImageField(
         "Фотография",
-        upload_to=course_img_path,
+        upload_to=get_img_path,
         variations={'thumb': (400, 225, True)},
         blank=True
     )
@@ -59,6 +39,7 @@ class Course(models.Model):
     class Meta:
         verbose_name = 'Курс'
         verbose_name_plural = 'Курсы'
+        ordering = ['-id']
 
     def __str__(self):
         return self.title

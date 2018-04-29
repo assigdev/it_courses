@@ -2,35 +2,15 @@ from django.db import models
 from django.conf import settings
 from utils.shortcuts.for_stdimage import img_files_del
 from stdimage import StdImageField
-from utils.img_paths import HASH_CHUNK_SIZE
+from utils.img_paths import get_img_path
 from ckeditor_uploader.fields import RichTextUploadingField
-
-
-def teacher_img_path(instance, filename):
-    import os.path
-    import hashlib
-    parts = os.path.splitext(filename)
-    ctx = hashlib.sha256()
-    if instance.img.multiple_chunks():
-        for data in instance.img.chunks(HASH_CHUNK_SIZE):
-            ctx.update(data)
-    else:
-        ctx.update(instance.img.read())
-    hex_path = ctx.hexdigest()
-    return '{0}/{1}/{2}/{3}{4}'.format(
-        'teachers',
-        hex_path[0:2],
-        hex_path[2:18],
-        hex_path[18:34],
-        parts[1]
-    )
 
 
 class Teacher(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='teacher')
     img = StdImageField(
         "Фотография",
-        upload_to=teacher_img_path,
+        upload_to=get_img_path,
         variations={'thumb': (400, 225, True)},
         blank=True
     )
@@ -71,6 +51,7 @@ class Student(models.Model):
     class Meta:
         verbose_name = "Студент"
         verbose_name_plural = "Студент"
+        ordering = ['-score']
 
     def __str__(self):
         return self.user.get_full_name()
