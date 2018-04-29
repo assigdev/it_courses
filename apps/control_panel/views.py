@@ -35,11 +35,13 @@ class StudentVisitCPView(StudentSelectionCPView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         slug = self.kwargs.get('lesson_slug', None)
-        if slug is None:
-            context['lesson'] = self.get_object().lessons.get_current_lesson()
-        else:
-            context['lesson'] = get_object_or_404(Lesson, slug=slug)
+        context['lesson'] = self._get_lesson(slug)
         return context
+
+    def _get_lesson(self, slug):
+        if slug is None:
+            return self.get_object().lessons.get_current_lesson()
+        return get_object_or_404(Lesson, slug=slug)
 
 
 class StudentHomeworkCPView(StudentVisitCPView):

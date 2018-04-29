@@ -70,7 +70,3 @@ class StudentListView(HeaderMixin, ListView):
     model = Student
     paginate_by = 30
     header_path = 'course'
-
-    # def get_queryset(self):
-    #     return super().get_queryset().order_by('score')
-

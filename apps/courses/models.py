@@ -96,7 +96,8 @@ class Lesson(models.Model):
     homework = RichTextUploadingField('Домашнее задание', blank=True)
     homework_level = models.PositiveSmallIntegerField('Уровень сложности Домашней Работы', choices=LEVEL, default=3)
     homework_deadline = models.DateField('Дедлайн для домашней работы', blank=True, null=True)
-    quiz = models.OneToOneField(Quiz, verbose_name='Тестирование', default=None,  blank=True, null=True, on_delete=models.SET_NULL)
+    quiz = models.OneToOneField(Quiz, verbose_name='Тестирование', default=None, blank=True, null=True,
+                                on_delete=models.SET_NULL)
     quiz_deadline = models.DateField('Дедлайн для тестирования', blank=True, null=True)
 
     objects = LessonQuerySet.as_manager()
@@ -209,28 +210,28 @@ class StudentInLesson(models.Model):
 
     def get_attendance(self):
         return {
-                False: 'Не был',
-                True: 'Был на занятии',
-            }[self.attendance]
+            False: 'Не был',
+            True: 'Был на занятии',
+        }[self.attendance]
 
     def get_homework_final(self):
         return {
-                True: 'Сдано',
-                False: 'Не сдано',
-            }[self.is_homework_final]
+            True: 'Сдано',
+            False: 'Не сдано',
+        }[self.is_homework_final]
 
     def get_homework_in_deadline(self):
         return {
-                False: 'Нет',
-                True: 'Да',
-                None: 'Еще не сдана',
+            False: 'Нет',
+            True: 'Да',
+            None: 'Еще не сдана',
         }[self.is_homework_in_deadline]
 
     def get_quiz_in_deadline(self):
         return {
-                False: 'Нет',
-                True: 'Да',
-                None: 'Тест не начат',
+            False: 'Нет',
+            True: 'Да',
+            None: 'Тест не начат',
         }[self.is_homework_in_deadline]
 
     def checked_homework_final(self):
