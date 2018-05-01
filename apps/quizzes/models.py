@@ -40,6 +40,7 @@ class Question(models.Model):
     class Meta:
         verbose_name = 'Вопрос для Тестирования'
         verbose_name_plural = 'Вопросы для Тестирования'
+        ordering = ['position']
 
     def __str__(self):
         return self.content

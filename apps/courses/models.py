@@ -232,7 +232,7 @@ class StudentInLesson(models.Model):
             False: 'Нет',
             True: 'Да',
             None: 'Тест не начат',
-        }[self.is_homework_in_deadline]
+        }[self.is_quiz_in_deadline]
 
     def checked_homework_final(self):
         if self.is_homework_final:
