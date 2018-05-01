@@ -13,6 +13,7 @@ services:
       - DB_USER=it_courses_user
       - DB_PASSWORD=it_courses_pass
       - DB_HOST=db
+      - REDIS_PASSWORD=bny1t92v
     depends_on:
       - db
     volumes:
@@ -24,7 +25,7 @@ services:
   redis:
     image: 'bitnami/redis:latest'
     environment:
-      - ALLOW_EMPTY_PASSWORD=yes
+      - REDIS_PASSWORD=bny1t92v
     ports:
       - '6379:6379'
 volumes:

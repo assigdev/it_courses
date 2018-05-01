@@ -146,7 +146,7 @@ if os.getenv('DB_HOST') is not None:
     CACHES = {
         "default": {
             "BACKEND": "django_redis.cache.RedisCache",
-            "LOCATION": "redis://redis:6379/0",
+            "LOCATION": "redis://:%s@redis:6379/0" % os.getenv('REDIS_PASSWORD'),
             "OPTIONS": {
                 "CLIENT_CLASS": "django_redis.client.DefaultClient",
             }
@@ -155,6 +155,7 @@ if os.getenv('DB_HOST') is not None:
 
     SESSION_ENGINE = "django.contrib.sessions.backends.cache"
     SESSION_CACHE_ALIAS = "default"
+
 
 LEVEL = (
     (2, 'простой'),
