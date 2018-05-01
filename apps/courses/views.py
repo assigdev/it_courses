@@ -44,7 +44,7 @@ def course_enroll(request, slug):
     return redirect('courses:detail', course.slug)
 
 
-class LessonListView(SecondHeaderMixin, AjaxFormMixin, ListView):
+class LessonListView(SecondHeaderMixin, AjaxFormMixin, StudentRequiredMixin, ListView):
     model = Lesson
     template_name = 'courses/lessons.html'
     menu_title = 'Занятия'

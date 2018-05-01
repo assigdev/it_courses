@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Quiz, Question, AnswerVar
+from .models import Quiz, Question, AnswerVar, QuizResult, StudentAnswer
 import nested_admin
 
 
@@ -19,3 +19,11 @@ class QuestionInline(nested_admin.NestedStackedInline):
 @admin.register(Quiz)
 class QuizAdmin(nested_admin.NestedModelAdmin):
     inlines = [QuestionInline]
+
+
+admin.site.register(QuizResult)
+
+@admin.register(StudentAnswer)
+class es(admin.ModelAdmin):
+    list_display = ('id', 'user_answer')
+# admin.site.register(StudentAnswer)
