@@ -84,7 +84,7 @@ class QuizResult(models.Model):
         for question in self.quiz.questions.all():
             answer = post_data['answer_%s' % question.position]
             if question.type == 'chr':
-                StudentAnswer.objects.create(user_answer=self, question=question, answer_chr=question.chr_answer)
+                StudentAnswer.objects.create(user_answer=self, question=question, answer_chr=answer)
                 if answer == question.chr_answer:
                     success_number += 1
             else:
