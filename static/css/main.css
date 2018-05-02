@@ -29,6 +29,16 @@ nav {
  float: left;
 }
 
+.state-badge {
+  padding: 5px 40px;
+  font-size: 14px;
+  margin: 3px;
+}
+
+.card-state{
+  margin: 8px;
+}
+
 .w-10 {
   width: 100px !important;
 }
@@ -55,7 +65,7 @@ nav {
 
 .course-badge {
   float: right;
-  margin: 3px;
+  /*margin: 1px;*/
   border-radius: 10px;
 }
 
