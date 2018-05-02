@@ -4,8 +4,10 @@
 
     {% get_student_in_lesson lesson user.student as student_in_lesson %}
 
-    {% for lesson in lesson_list %}
-        <a class="badge badge-success" href="{% url 'courses:lesson' course_slug lesson.slug %}">{{ lesson.number }}</a>
+    {% for less in lesson_list %}
+        <a class="badge {% if less.id == lesson.id %}badge-success{% else %}badge-secondary{% endif %}"
+           href="{% url 'courses:lesson' course_slug less.slug %}"
+        >{{ less.number }}</a>
     {% endfor %}
 
 
