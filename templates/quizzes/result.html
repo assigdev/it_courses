@@ -49,7 +49,7 @@
                         {% for answer in question.answervar_set.all %}
                             <p>
                                 <label>
-                                    <input
+                                    <input  disabled
                                             name="answer_{{ question.position }}"
                                             type="radio"
                                             {% if answer.is_true %}checked="checked"{% endif %}
@@ -66,7 +66,7 @@
                                     <input disabled
                                            name="student_answer_{{ question.position }}"
                                            type="radio"
-                                           {% if answer == student_answer.answer_var %}checked{% endif %}
+                                           {% if answer == student_answer.answer_var %}checked="checked"{% endif %}
                                     >
                                     {{ answer.content }}
                                 </label>

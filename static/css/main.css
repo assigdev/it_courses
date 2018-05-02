@@ -20,10 +20,17 @@ nav {
   padding: 10px;
   background-color: #666666;
   text-align: center;
+  width: 120px !important;
+  float: left;
+
+}
+
+.nav{
+ float: left;
 }
 
 .w-10 {
-  width: 10% !important;
+  width: 100px !important;
 }
 
 .second_header a, .link-mod{

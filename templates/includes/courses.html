@@ -3,7 +3,7 @@
 <div class="row">
     {% for course in course_list %}
         <div class="col-lg-4 col-md-6">
-            <div class="card  has-text-dark bg-light">
+            <div class="card  has-text-dark bg-light" style="margin-bottom: 20px">
                 <div class="course-header bg-light">
                     <h6 class="text-center  text-secondary">{{ course.get_state_display }}
                         {% get_user_badge course %}</h6>

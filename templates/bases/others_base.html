@@ -2,8 +2,8 @@
 {% load menu_tags %}
 
 {% block second_header %}
-    <div class="row second_header">
-        <h5 class="w-10 second_header_h">{{ menu_title }}</h5>
+    <div class="second_header">
+        <h5 class="second_header_h">{{ menu_title }}</h5>
         <ul class="nav ">
 
             {% with menu_courses.count as courses_count %}
@@ -17,4 +17,6 @@
             {% endwith %}
         </ul>
     </div>
+    <br>
+    <br>
 {% endblock %}
