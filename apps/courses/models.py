@@ -108,7 +108,7 @@ class Lesson(models.Model):
         ordering = ['number']
 
     def have_homework(self):
-        if len(self.homework) > 10:
+        if len(self.homework) < 10:
             return False
         return True
 
