@@ -38,8 +38,10 @@ def course_enroll(request, slug):
     if not course or not request.user.is_student:
         messages.error(request, 'Ошибка при записи на курс')
         return redirect('courses:list')
-    CourseStudent.objects.create(course=course, student=request.user.student, status='in_view')
-    course = Course.objects.get(pk=request.GET.get('course_id', 1))
+    student = request.user.student
+    if CourseStudent.objects.filter(course=course, student=student).count() > 0:
+        CourseStudent.objects.create(course=course, student=student, status='in_view')
+    # course = Course.objects.get(pk=request.GET.get('course_id', 1))
     messages.success(request, "Вы успешно записались на курс")
     return redirect('courses:detail', course.slug)
 
