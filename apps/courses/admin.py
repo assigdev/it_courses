@@ -12,4 +12,6 @@ class CourseAdmin(admin.ModelAdmin):
     list_display = ('title', 'course', 'number', 'date', 'homework_deadline', 'quiz_deadline')
 
 
-admin.site.register(CourseStudent)
+@admin.register(CourseStudent)
+class CourseAdmin(admin.ModelAdmin):
+    list_display = ('student', 'course', 'status')
